@@ -1,0 +1,22 @@
+:root {
+  /* Background colors */
+  --color-bg-main: #121212;
+  --color-bg-primary: #1E1E1E;
+  --color-bg-secondary: #2C2C2C;
+
+  /* Text colors */
+  --color-text-primary: #E0E0E0;
+  --color-text-secondary: #B0B0B0;
+
+  /* Accent colors */
+  --color-accent: #3A82F7;
+  --color-accent-hover: #5A9BFF;
+
+  /* Status colors */
+  --color-success: #4CAF50;
+  --color-warning: #FFB300;
+  --color-error: #E53935;
+
+  /* Borders / dividers */
+  --color-divider: #383838;
+}
