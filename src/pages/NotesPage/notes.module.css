@@ -1,0 +1,18 @@
+.bodyContainer {
+   display: grid;
+   grid-template-columns: 0px 1fr; /* by default sidebar hidden */
+   grid-template-rows: auto 1fr;
+   transition: grid-template-columns 0.3s ease;
+}
+
+/* when sidebar is open */
+.bodyContainer.sidebarOpen {
+   grid-template-columns: 220px 1fr;
+}
+
+@media (max-width: 768px) {
+   .bodyContainer {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr;
+   }
+}
