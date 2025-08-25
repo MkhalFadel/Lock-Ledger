@@ -6,9 +6,9 @@ export default function Header(props)
    return (
       <nav className={`${styles.header} ${props.isOpen ? styles.open : ""}`}>
             <button onClick={() => props.setIsOpen(false)} className={styles.closeBtn}>
-               <img src="/src/assets/icons/xIcon.png" alt="Close Button" />
+               <img src="src/assets/icons/xIcon.png" alt="Close Button" />
             </button>
-            <img className={styles.logo} src="/src/assets/lockLedgerLogo.png" alt="lockLedgerIcon" />
+            <img className={styles.logo} src="src/assets/lockLedgerLogo.png" alt="lockLedgerIcon" />
             <div className={styles.notesNav}>
                <h3>Notes:</h3>
                <p>All Notes</p>
@@ -21,7 +21,7 @@ export default function Header(props)
                <p>History</p> 
             </div>
             <div className={styles.profile}>
-               <img className={styles.profilePic} src="/src/assets/icons/profileIcon.png" alt="profilePic" />
+               <img className={styles.profilePic} src="src/assets/icons/profileIcon.png" alt="profilePic" />
                <h3 className={styles.username}>MkhalFadel</h3>
             </div>
       </nav>

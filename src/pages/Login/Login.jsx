@@ -7,7 +7,7 @@ export default function Login()
       <div className={styles.bodyContainer}>
          <form>
             <div className={styles.container}>
-               <img className={styles.logo} src="/src/assets/lockLedgerLogo.png" alt="LockLedgerLogo" />
+               <img className={styles.logo} src="src/assets/lockLedgerLogo.png" alt="LockLedgerLogo" />
                <h1>Welcome to LockLedger</h1>
                <div className={styles.emailContainer}>
                   <label htmlFor="Email">Email</label>
@@ -19,7 +19,7 @@ export default function Login()
                   <input placeholder='password123' id="password" type="password" className={styles.password} />
                </div>
 
-               <Link to="/signup" className={styles.signUpLink}>Don't Have an account? <span>Signup</span></Link>
+               <Link to="/Lock-Ledger/signup" className={styles.signUpLink}>Don't Have an account? <span>Signup</span></Link>
 
                <button className={styles.loginBtn}>Login</button>
             </div>

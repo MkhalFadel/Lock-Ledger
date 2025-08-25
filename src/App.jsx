@@ -7,9 +7,9 @@ export default function App()
 {
   return (
     <Routes>
-      <Route path="/" element={<NotesPage />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      <Route path="/Lock-Ledger/" element={<NotesPage />} />
+      <Route path="/Lock-Ledger/login" element={<Login />} />
+      <Route path="/Lock-Ledger/signup" element={<Signup />} />
     </Routes>
   )
 }
