@@ -1,7 +1,12 @@
 import styles from "./ledger.module.css"
+import { useEffect } from "react"
 
 export default function()
 {
+   useEffect(() => {
+      document.title = "LockLedger - Ledger"
+   },[])
+
    return (
       <section className={styles.content}>
          <div className={styles.head}>
@@ -51,8 +56,18 @@ export default function()
                      </td>
                   </tr>
                   <tr>
-                     <td>17-8-2025</td>
-                     <td>EWC Finals</td>
+                     <td>1-8-2025</td>
+                     <td>PayCheck</td>
+                     <td>Income</td>
+                     <td>$1000</td>
+                     <td>
+                        <button className={`${styles.tableBtn} ${styles.editBtn}`}>Edit</button>
+                        <button className={`${styles.tableBtn} ${styles.deleteBtn}`}>Delete</button>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>8-7-2025</td>
+                     <td>Side Hustle</td>
                      <td>Expenses</td>
                      <td>$150</td>
                      <td>
@@ -61,20 +76,10 @@ export default function()
                      </td>
                   </tr>
                   <tr>
-                     <td>17-8-2025</td>
-                     <td>EWC Finals</td>
+                     <td>5-6-2025</td>
+                     <td>Gas</td>
                      <td>Expenses</td>
-                     <td>$150</td>
-                     <td>
-                        <button className={`${styles.tableBtn} ${styles.editBtn}`}>Edit</button>
-                        <button className={`${styles.tableBtn} ${styles.deleteBtn}`}>Delete</button>
-                     </td>
-                  </tr>
-                  <tr>
-                     <td>17-8-2025</td>
-                     <td>EWC Finals</td>
-                     <td>Expenses</td>
-                     <td>$150</td>
+                     <td>$45</td>
                      <td>
                         <button className={`${styles.tableBtn} ${styles.editBtn}`}>Edit</button>
                         <button className={`${styles.tableBtn} ${styles.deleteBtn}`}>Delete</button>

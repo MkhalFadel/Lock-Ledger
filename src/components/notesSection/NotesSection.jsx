@@ -1,7 +1,12 @@
 import styles from './notesSection.module.css';
+import { useEffect } from 'react';
 
 export default function NotesSection()
 {
+   useEffect(() => {
+      document.title = "LockLedger - Notes"
+   },[])
+
    return (
       <section className={styles.content}>
          <div className={styles.head}>

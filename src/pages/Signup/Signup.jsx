@@ -1,8 +1,14 @@
 import styles from './signup.module.css'
 import '../../App.css'
 import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+
 export default function Signup()
 {
+   useEffect(() => {
+      document.title = "LockLedger - Signup"
+   },[])
+
    return (
       <div className={styles.bodyContainer}>
          <form>
