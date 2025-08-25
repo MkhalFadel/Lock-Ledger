@@ -1,0 +1,134 @@
+.content{
+   grid-row: 2 / 3;
+   grid-column: 2 / 3;
+   display: flex;
+   flex-direction: column;
+   padding: 20px 24px;
+   overflow: hidden;
+}
+
+.head{
+   /* remove: grid-row/grid-column/overflow */
+   display: flex;
+   align-items: center;
+   justify-content: space-between; /* or space-around if you prefer */
+   gap: 16px;
+   width: 100%;
+   margin: 0 0 16px 0;  /* spacing below header */
+}
+.head h2{
+   font-size: 2.5rem;
+}
+
+.addBtn{
+   border: none;
+   background-color: #0abcc2;
+   color: #F5F5F5;
+   padding: 7px 15px;
+   border-radius: 7px;
+   font-size: 1.2rem;
+   cursor: pointer;
+   transition: all 0.15s ease-in-out;
+}
+
+.addBtn:hover {
+   background-color: #00A0A8;
+}
+
+.addBtn:active{
+   background-color: #00868A;
+}
+
+.tableContainer {
+   width: 100%;
+   overflow-x: auto;
+}
+
+/* Table base */
+.table {
+   width: 100%;
+   border-collapse: separate;   /* allows rounded corners */
+   border-spacing: 0;
+   background: rgba(255, 255, 255, 0.03); 
+   color: #F5F5F5;                              
+   border: 1px solid #003C4D;                   
+   border-radius: 8px;
+   overflow: hidden;                            /* clip rounded corners */
+   font-size: 0.95rem;
+   text-align: center;
+}
+
+/* Header */
+.table thead th {
+   background:  #004E62; /* matches your panels */
+   color: #EAF6FB;
+   padding: 12px 14px;
+   font-weight: 600;
+   font-size: 1.4rem;
+   letter-spacing: 0.02em;
+   text-align: left;
+   border-bottom: 1px solid #003C4D;
+   white-space: nowrap;
+   text-align: center;
+}
+
+/* Cells */
+.table tbody td {
+   padding: 12px 14px;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+   vertical-align: middle;
+   font-size: 1.1rem;
+}
+
+/* Stripe + hover using teal accent */
+.table tbody tr:nth-child(even) {
+   background: rgba(255, 255, 255, 0.02);
+}
+
+.table tbody tr:hover {
+   background: rgba(0, 196, 204, 0.12); /* #00C4CC with opacity */
+}
+
+/* Rounded top corners on header cells */
+.table thead th:first-child { border-top-left-radius: 8px; }
+.table thead th:last-child  { border-top-right-radius: 8px; }
+
+
+/* Shared button base */
+.tableBtn {
+   padding: 5px 15px;
+   font-size: 1.1rem;
+   border: none;
+   border-radius: 6px;
+   cursor: pointer;
+   transition: background-color 0.2s ease, transform 0.15s ease;
+   margin-left: 15px; 
+   color: white;
+}
+
+.editBtn {
+   background-color: #00c4cc; 
+}
+
+.editBtn:hover {
+   background-color: #00d9e1; 
+   transform: scale(1.05);
+}
+
+.deleteBtn {
+   background-color: #e74c3c; 
+}
+
+.deleteBtn:hover {
+   background-color: #ff5a4c;
+   transform: scale(1.05);
+}
+
+
+@media (max-width: 768px) {
+   .content{grid-column: 1 / -1;}
+   .table { font-size: 0.9rem; }
+   .table thead th, .table tbody td { padding: 10px 12px; }
+   .editBtn{margin-bottom: 3px;}
+
+}

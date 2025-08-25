@@ -2,7 +2,7 @@ import styles from './header.module.css'
 
 export default function Header(props)
 {
-
+   
    return (
       <nav className={`${styles.header} ${props.isOpen ? styles.open : ""}`}>
             <button onClick={() => props.setIsOpen(false)} className={styles.closeBtn}>
@@ -11,13 +11,13 @@ export default function Header(props)
             <img className={styles.logo} src="src/assets/lockLedgerLogo.png" alt="lockLedgerIcon" />
             <div className={styles.notesNav}>
                <h3>Notes:</h3>
-               <p>All Notes</p>
+               <p onClick={() => props.changePage("notes")}>All Notes</p>
                <p>Favorites</p>
                <p>Trash</p>
             </div>
             <div className={styles.expNav}>
-               <h3>Expenses:</h3>
-               <p>All Expenses</p>
+               <h3>Ledger:</h3>
+               <p onClick={() => props.changePage("ledger")}>All Entries</p>
                <p>History</p> 
             </div>
             <div className={styles.profile}>
