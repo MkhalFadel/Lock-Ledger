@@ -50,6 +50,8 @@
 
 .notesContent{
    background-color: rgba(0, 0, 0, 0.459);
+   border: none;
+   cursor: pointer;
    width: 100%;               /* let the grid handle column width */
    min-height: 100px;
    border-radius: 7px;

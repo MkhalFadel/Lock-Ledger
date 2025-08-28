@@ -1,4 +1,8 @@
 import styles from './sideBar.module.css'
+import xIcon from '../../assets/icons/xIcon.png';
+import logo from '../../assets/lockLedgerLogo.png';
+import profileIcon from '../../assets/icons/profileIcon.png';
+
 
 export default function Header(props)
 {
@@ -6,9 +10,9 @@ export default function Header(props)
    return (
       <nav className={`${styles.sideBar} ${props.isOpen ? styles.open : ""}`}>
             <button onClick={() => props.setIsOpen(false)} className={styles.closeBtn}>
-               <img src="src/assets/icons/xIcon.png" alt="Close Button" />
+               <img src={xIcon} alt="Close Button" />
             </button>
-            <img className={styles.logo} src="src/assets/lockLedgerLogo.png" alt="lockLedgerIcon" />
+            <img className={styles.logo} src={logo} alt="lockLedgerIcon" />
             <div className={styles.notesNav}>
                <h3>Notes:</h3>
                <p className={`${props.page === 'notes' ? styles.selected : ""}`} onClick={() => props.changePage("notes")}>All Notes</p>
@@ -21,7 +25,7 @@ export default function Header(props)
                <p>History</p> 
             </div>
             <div className={styles.profile}>
-               <img className={styles.profilePic} src="src/assets/icons/profileIcon.png" alt="profilePic" />
+               <img className={styles.profilePic} src={profileIcon} alt="profilePic" />
                <h3 className={styles.username}>MkhalFadel</h3>
             </div>
       </nav>
