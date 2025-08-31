@@ -16,7 +16,7 @@ export default function Notes({noteId, notes})
    useEffect(() => {
       if (note) setText(note.content)
    },[note])
-
+   
    function lastEditTime()
    {
       if(isEditing)

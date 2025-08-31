@@ -25,7 +25,7 @@ export default function NotesPage()
          <Search isOpen ={isOpen} setIsOpen={setIsOpen} />
          <SideBar isOpen ={isOpen} setIsOpen={setIsOpen} changePage={changePage} page={page} />
          {page === "notes" && <NotesSection page={page} />}
-         {page === "ledger" && <Ledger />}
+         {page === "ledger" && <Ledger page={page} />}
       </div>
    )
 }

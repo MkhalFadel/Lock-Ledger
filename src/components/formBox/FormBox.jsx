@@ -1,39 +1,57 @@
 import styles from "./formBox.module.css";
 import { useState } from "react";
 
-export default function FormBox({title, setTitle, page, setAddingNote, addNotes})
+export default function FormBox({page, 
+                                 setAddingNote, 
+                                 addNotes, 
+                                 addTransaction, 
+                                 setAddingTransaction, 
+                                 transaction, 
+                                 isEditing, 
+                                 editTransaction})
 {
 
+   // getting today's date
    const today = new Date().toISOString().split("T")[0];
-   const [date, setDate] = useState(today);
+   
+   // state variables for the Pages
+   const [date, setDate] = useState(isEditing ? transaction.date: today);
+   const [title, setTitle] = useState(isEditing ? transaction.title : "");
+   // only used in the Ledger page
+   const [type, setType] = useState(isEditing ? transaction.type : "");
+   const [amount, setAmount] = useState(isEditing ? transaction.amount : 0.00);
    
    return (
       <div className={styles.container}>
          <div className={styles.inputBox}>
+               {/* appears when a new note is being added */}
             {page === "notes" && <div>
                <h4>Add New Note</h4>
                <input onChange={e => setTitle(e.target.value)} placeholder="Add Title" value={title} type="text" />
                <div className={styles.btns}>
-                  <button onClick={() => addNotes(title)} className={`${styles.formBtn} ${styles.addBtn}`}>Add Note</button>
+                  <button onClick={() => addNotes(title, date)} className={`${styles.formBtn} ${styles.addBtn}`}>Add Note</button>
                   <button onClick={() => setAddingNote(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                </div>
             </div>}
 
-
+               {/* appears when a new transaction is being added */}
             {page === "ledger" && <div>
                <h4>Update Ledger</h4>
-               <input value={date} type="date" />
+               <input onChange={e => setDate(e.target.value)} value={date} type="date" />
                <input onChange={e => setTitle(e.target.value)} placeholder="Add Title" value={title} type="text" />
-               <select className={styles.typeBox} name="type" id="type" >
-                  <option disabled>Select Type</option>
+               <select value={type} onChange={e => setType(e.target.value)} className={styles.typeBox} name="type" id="type" >
+                  <option value="" disabled>Select Type</option>
                   <option value="Income">Income</option>
                   <option value="Expenses">Expenses</option>
                </select>
-               <input type="number" placeholder="$0.00" />
+               <input value={amount} onChange={e => setAmount(e.target.value)} type="number" placeholder="$0.00" />
                
                <div className={styles.btns}>
-                  <button className={`${styles.formBtn} ${styles.addBtn}`}>Update</button>
-                  <button className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
+                  <button onClick={() => { {/*change the function used either editing or adding*/}
+                     isEditing ? editTransaction(date, title, type, amount) : addTransaction(date, title, type, amount)}} 
+                     className={`${styles.formBtn} ${styles.addBtn}`}>Update</button>
+                  
+                  <button onClick={() => setAddingTransaction(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                </div>
             </div>}
          </div>
