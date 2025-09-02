@@ -6,7 +6,7 @@ import Search from '../../components/search/Search'
 import NotesSection from '../../components/notesSection/NotesSection'
 import { useState } from 'react'
 import Ledger from '../../components/ledger/Ledger'
-import FormBox from '../../components/formBox/FormBox'
+import ProfileInfo from '../../components/ProfilePage/Profile'
 
 export default function NotesPage()
 {
@@ -26,6 +26,7 @@ export default function NotesPage()
          <SideBar isOpen ={isOpen} setIsOpen={setIsOpen} changePage={changePage} page={page} />
          {page === "notes" && <NotesSection page={page} />}
          {page === "ledger" && <Ledger page={page} />}
+         {page === "profile" && <ProfileInfo />}
       </div>
    )
 }

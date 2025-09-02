@@ -24,7 +24,7 @@ export default function Header(props)
                <p className={`${props.page === 'ledger' ? styles.selected : ""}`} onClick={() => props.changePage("ledger")}>All Entries</p>
                <p>History</p> 
             </div>
-            <div className={styles.profile}>
+            <div onClick={() => props.changePage("profile")} className={styles.profile}>
                <img className={styles.profilePic} src={profileIcon} alt="profilePic" />
                <h3 className={styles.username}>MkhalFadel</h3>
             </div>

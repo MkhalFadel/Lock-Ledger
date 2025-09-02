@@ -4,7 +4,7 @@ import { DAYS, MONTHS, formatTime } from "../../../utils/utility";
 
 export default function Notes({noteId, notes})
 {
-   const [isEditing, setIsEditing] = useState(false); 
+   const [isEditing, setIsEditing] = useState(false)  ;
    const [text, setText] = useState("");
    const [editedText,setEditedText] = useState("");
    const [lastEdit, setLastEdit] = useState("");

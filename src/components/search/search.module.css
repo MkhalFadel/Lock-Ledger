@@ -4,9 +4,7 @@
    display: flex;
    align-items: center;
    justify-content: space-between;
-   padding: 16px 24px;
-   position: sticky;  /* optional: stays visible on scroll */
-   top: 0;
+   padding: 16px 24px 0;
    background: transparent;
 }
 

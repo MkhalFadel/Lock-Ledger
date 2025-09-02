@@ -1,0 +1,130 @@
+.profileContainer{
+   grid-row: 2/3;
+   grid-column: 2/3;
+   display: flex;
+   flex-direction: column;
+   padding: 20px 24px;
+}
+
+.head
+{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   width: 100%;
+   margin: 0 0 16px 0;
+}
+
+.head h2{
+   font-size: 2.5rem;
+}
+
+.profile{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   background: linear-gradient(135deg, #003146, #0A1E33);
+   border-radius: 7px;
+   padding: 10px 0 ;
+}
+
+.accountInfo{
+   display: flex;
+   align-items: center;
+   justify-content: space-around;
+   width: 100%;   
+}
+
+.accountInfo img{
+   border: 1px cyan solid;
+   border-radius: 50%;
+   width: 15rem;
+   height: 15rem;
+   margin-right: 300px;
+}
+
+.info{
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   gap: 10px;
+}
+
+.info div{
+   display: flex;
+   flex-direction: column;
+   align-items: start;
+   justify-content: center;
+   width: 100%;
+}
+
+.info div input {
+   width: 100%;
+   background-color: #143c5a;
+   border: 1px solid #003C4D;
+   color: #ffffff;
+   padding: 0.75rem;
+   border-radius: 6px;
+   font-size: 1rem;
+   outline: none;
+   transition: border-color 0.3s ease;
+   margin-top: 5px;
+   margin: 5px 0 15px 0;
+   margin-bottom: 15px;
+}
+
+.settings
+{
+   border-top: 1px solid cyan;
+   margin: 25px 0 15px;
+   display: flex; 
+   flex-direction: column;
+   align-items: start;
+   justify-content: center;
+   width: 100%;
+}
+
+.settings div{
+   padding: 15px 0 15px 10px;
+   background-color: #143c5a;
+   width: 98%;
+   margin-top: 7px;
+   margin-left: 5px;
+   border-radius: 7px;
+   cursor: pointer;
+}
+
+.settings div:hover{
+   background-color: #003146;
+}
+
+
+@media (max-width: 768px){
+   .profileContainer{
+      grid-column: 1 / -1;
+   }
+
+   .accountInfo{
+      flex-direction: column;
+      justify-content: center;
+   }
+
+   .accountInfo img{
+      margin-right: 0;
+      margin-bottom: 25px;
+   }
+
+   .info{
+      margin-right: 25px;
+   }
+
+   .settings div{
+      margin-left: 0;
+      width: 90%;
+      margin: 10px auto 0;
+   }
+}  
