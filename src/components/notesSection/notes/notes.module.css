@@ -8,7 +8,7 @@
 
 .textEdit, .notesContent{
    width: 100%;
-   height: 380px;
+   height: 365px;
    border: none;
    background-color:#0d141c;
    padding: 5px;
@@ -16,6 +16,10 @@
    border-radius: 0;
    outline: none; 
    resize: none;
+}
+
+.sideBarClose{
+   height: 310px;
 }
 
 .notesContent{
@@ -37,6 +41,7 @@
    align-items: center;
    justify-content: center;
    margin-left: 2px;
+   
 }
 
 .leftSide h3{
@@ -49,34 +54,37 @@
 }
 
 .rightSide{
+   display: flex;
+   align-items: center;
+   justify-content: center;
    margin-right: 2px;
 }
 
-.tableBtn {
-   padding: 5px 15px;
-   font-size: 1.1rem;
+
+
+.editBtn , .deleteBtn, .discardBtn{
+   background-color: transparent; 
    border: none;
-   border-radius: 6px;
    cursor: pointer;
-   transition: background-color 0.2s ease, transform 0.15s ease;
-   margin-left: 15px; 
-   color: white;
+   margin-right: 15px;
 }
 
-.editBtn {
-   background-color: #00c4cc; 
+
+.editBtn img , .deleteBtn img, .discardBtn img{
+   width: 50px;
+   height: 50px;
 }
 
-.editBtn:hover {
-   background-color: #00d9e1; 
+.editBtn:hover, .deleteBtn:hover, .discardBtn:hover {
+   background-color: rgba(255, 255, 255, 0.281); 
    
 }
 
-.deleteBtn, .discardBtn {
-   background-color: #e74c3c; 
-}
+@media (max-width: 768px)
+{
+   .container{height: 75vh;}
 
-.deleteBtn:hover, .discardBtn:hover {
-   background-color: #ff5a4c;
-   
+   .textEdit, .notesContent{
+      height: 100%;
+   }
 }

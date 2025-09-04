@@ -93,42 +93,25 @@
 .table thead th:first-child { border-top-left-radius: 8px; }
 .table thead th:last-child  { border-top-right-radius: 8px; }
 
-
-/* Shared button base */
-.tableBtn {
-   padding: 5px 15px;
-   font-size: 1.1rem;
-   border: none;
-   border-radius: 6px;
+.editBtn, .deleteBtn {
+   background-color: transparent;
+   border: none; 
    cursor: pointer;
-   transition: background-color 0.2s ease, transform 0.15s ease;
-   margin-left: 15px; 
-   color: white;
 }
 
-.editBtn {
-   background-color: #00c4cc; 
+.editBtn img, .deleteBtn img{
+   width: 50px;
+   height: 50px;
 }
-
-.editBtn:hover {
-   background-color: #00d9e1; 
-   transform: scale(1.05);
-}
-
-.deleteBtn {
-   background-color: #e74c3c; 
-}
-
-.deleteBtn:hover {
-   background-color: #ff5a4c;
-   transform: scale(1.05);
-}
-
 
 @media (max-width: 768px) {
    .content{grid-column: 1 / -1;}
    .table { font-size: 0.9rem; }
    .table thead th, .table tbody td { padding: 10px 12px; }
-   .editBtn{margin-bottom: 3px;}
+   .editBtn, .deleteBtn{
+      width: 35px;
+      height: 35px;
+   }
 
+   .editBtn{margin-bottom: 15px ;}
 }

@@ -38,12 +38,41 @@
    width: 100%;   
 }
 
-.accountInfo img{
+.profilePicContainer{
+   position: relative;
+   width: 100%;
+   margin-right: 200px;
+}
+
+.profilePic{
    border: 1px cyan solid;
    border-radius: 50%;
    width: 15rem;
    height: 15rem;
-   margin-right: 300px;
+   margin-left: 50px;
+}
+
+.editPicBtn
+{
+   vertical-align: middle;
+   background-color: grey;
+   border-radius: 50%;
+   width: 50px;
+   height: 50px;
+   position: absolute;
+   bottom: 8px;
+   right: 170px;
+   cursor: pointer;
+   transition: all 0.15s ease-in-out;
+}
+
+.editPicBtn img{
+   width: 100%;
+   height: 100%;
+}
+
+.sideBarClose{
+   right: 282px;
 }
 
 .info{
@@ -52,6 +81,7 @@
    align-items: center;
    justify-content: center;
    gap: 10px;
+   width: 100%;
 }
 
 .info div{
@@ -72,9 +102,37 @@
    font-size: 1rem;
    outline: none;
    transition: border-color 0.3s ease;
-   margin-top: 5px;
    margin: 5px 0 15px 0;
-   margin-bottom: 15px;
+}
+
+.editInfo{
+   display: flex;
+   flex-direction: row !important;
+   align-items: center !important;
+   justify-content: space-between !important;
+   width: 100%;
+}
+
+.editInfo button{
+   background-color: transparent;
+   border: none;
+   cursor: pointer;
+}
+
+.editInfo img{
+   width: 50px;
+   height: 50px;
+   margin: 0;
+   border: none;
+}  
+
+.changesBtns
+{
+   width: fit-content !important;
+   display: flex;
+   align-items: center !important;
+   justify-content: center;
+   flex-direction: row !important;   
 }
 
 .settings
@@ -113,13 +171,26 @@
       justify-content: center;
    }
 
-   .accountInfo img{
-      margin-right: 0;
-      margin-bottom: 25px;
+   .profilePicContainer{
+      margin: 0 auto;
+      text-align: center;
    }
 
-   .info{
-      margin-right: 25px;
+   .profilePic{
+      margin-left: 0;
+   }
+
+   .editPicBtn{
+      right: 90px;
+   }
+
+   .info div{
+      width: 98%;
+      margin-left: 5px;
+   }
+
+   .info label{
+      margin-left: 5px;
    }
 
    .settings div{

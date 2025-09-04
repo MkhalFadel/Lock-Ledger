@@ -1,13 +1,20 @@
 import styles from "./notes.module.css"
+import FormBox from "../../formBox/FormBox";
 import { useState,useEffect } from "react"
 import { DAYS, MONTHS, formatTime } from "../../../utils/utility";
+import EditIcon from '../../../assets/icons/EditIcon.png'
+import saveIcon from '../../../assets/icons/saveIcon.png'
+import Trash from '../../../assets/icons/Trash.png'
+import xIcon from '../../../assets/icons/xIcon.png'
 
-export default function Notes({noteId, notes})
+export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes, isDeleting, setIsDeleting})
 {
    const [isEditing, setIsEditing] = useState(false)  ;
    const [text, setText] = useState("");
    const [editedText,setEditedText] = useState("");
    const [lastEdit, setLastEdit] = useState("");
+
+   console.log(isOpen)
 
    // searching for the clicked note via ID
    const note = notes.find(note => note.id === noteId );
@@ -16,6 +23,13 @@ export default function Notes({noteId, notes})
    useEffect(() => {
       if (note) setText(note.content)
    },[note])
+
+   useEffect(() => {
+   document.body.style.overflow = "hidden";
+   return () => {
+      document.body.style.overflow = "";
+   };
+}, []);
    
    function lastEditTime()
    {
@@ -29,8 +43,15 @@ export default function Notes({noteId, notes})
          const minutes = date.getMinutes();
          const amOrPm = hour > 12 ? "AM" : "PM";
          const dayName = DAYS[date.getDay()];  
-         setLastEdit(`${month} ${dayDate} ${formatTime(hour)}:${formatTime(minutes)} ${amOrPm} ${dayName}`)
+         setLastEdit(`${month} ${dayDate} ${formatTime(hour)}:${formatTime(minutes)} ${amOrPm} `)
       }
+   }
+
+   function deleteNote()
+   {
+      setNotes(notes.filter(n => n.id !== note.id))
+      setIsDeleting(false);
+      setInNote(false);
    }
    
    function saveChanges()
@@ -55,34 +76,46 @@ export default function Notes({noteId, notes})
          <div className={styles.toolbar}>
             <div className={styles.leftSide}>
                <h3>{note.title}</h3>
-               <p>Last Edit: {lastEdit}</p>
+               <p>{lastEdit}</p>
             </div>
 
             <div className={styles.rightSide}>
-               {isEditing  && <button 
-                  onClick={discardChanges}
-                  className={`${styles.discardBtn} ${styles.tableBtn}`}>Discard Changes</button>}
                <button 
                   onClick={saveChanges} 
-                  className={`${styles.editBtn} ${styles.tableBtn}`}
-                  style={{ backgroundColor: isEditing ? "#00cc66" : "#00c4cc" }}
+                  className={styles.editBtn}
+                  
                   >
-                     {isEditing ? "Save" : "Edit"}
+                     <img src={isEditing ? saveIcon : EditIcon} alt={isEditing ? "saveBtn" : "editBtn"} />
                </button>
-               <button className={`${styles.deleteBtn} ${styles.tableBtn}`}>Delete</button>
+               
+               {!isEditing && <button onClick={() => setIsDeleting(true)} className={styles.deleteBtn}>
+                  <img src={Trash} alt="DeleteBtn" />
+               </button>}
+
+               {isEditing  && <button 
+                  onClick={discardChanges}
+                  className={styles.discardBtn}>
+                     <img src={xIcon} alt="Discard changes" />      
+               </button>}
             </div>
          </div>
          
          {isEditing && <textarea 
             onChange={(event) => setEditedText(event.target.value)} 
-            className={styles.textEdit} 
+            className={`${styles.textEdit} ${!isOpen ? styles.sideBarClose : ""}`} 
             name="notesContent" id="0">
             {text}
          </textarea> }
          
-         {!isEditing && <div className={styles.notesContent}>
+         {!isEditing && <div className={`${styles.notesContent} ${!isOpen ? styles.sideBarClose : ""}`}>
             {text}
          </div>}
+
+         {isDeleting && <FormBox 
+                                 deleteNote={deleteNote} 
+                                 page={page} 
+                                 isDeleting={isDeleting} 
+                                 setIsDeleting={setIsDeleting} />}
       </div>
    )
 }

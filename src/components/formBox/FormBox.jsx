@@ -8,7 +8,11 @@ export default function FormBox({page,
                                  setAddingTransaction, 
                                  transaction, 
                                  isEditing, 
-                                 editTransaction})
+                                 editTransaction,
+                                 isDeleting,
+                                 setIsDeleting,
+                                 deleteNote,
+                                 deleteTransaction})
 {
 
    // getting today's date
@@ -25,17 +29,28 @@ export default function FormBox({page,
       <div className={styles.container}>
          <div className={styles.inputBox}>
                {/* appears when a new note is being added */}
-            {page === "notes" && <div>
+            {page === "notes" && !isDeleting &&  (<div>
                <h4>Add New Note</h4>
                <input onChange={e => setTitle(e.target.value)} placeholder="Add Title" value={title} type="text" />
                <div className={styles.btns}>
                   <button onClick={() => addNotes(title, date)} className={`${styles.formBtn} ${styles.addBtn}`}>Add Note</button>
                   <button onClick={() => setAddingNote(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                </div>
-            </div>}
+            </div>)}
+
+               {/* appears when a note is being Deleted */}
+            {page === "notes" && isDeleting && (
+               <div>
+                  <h4>Delete Note</h4>
+                  <div className={styles.btns}>
+                     <button onClick={deleteNote} className={`${styles.formBtn} ${styles.deleteBtn}`}>Confirm Delete</button>
+                     <button onClick={() => setIsDeleting(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
+                  </div>
+               </div>
+               )}
 
                {/* appears when a new transaction is being added */}
-            {page === "ledger" && <div>
+            {page === "ledger" && !isDeleting && (<div>
                <h4>Update Ledger</h4>
                <input onChange={e => setDate(e.target.value)} value={date} type="date" />
                <input onChange={e => setTitle(e.target.value)} placeholder="Add Title" value={title} type="text" />
@@ -53,7 +68,18 @@ export default function FormBox({page,
                   
                   <button onClick={() => setAddingTransaction(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                </div>
-            </div>}
+            </div>)}
+
+               {/* appears when a transaction is being Deleted */}
+            {page === "ledger" && isDeleting && (
+               <div>
+                  <h4>Delete Transaction</h4>
+                  <div className={styles.btns}>
+                     <button onClick={deleteTransaction} className={`${styles.formBtn} ${styles.deleteBtn}`}>Confirm Delete</button>
+                     <button onClick={() => {setIsDeleting(false); setAddingTransaction(false)}} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
+                  </div>
+               </div>
+               )}
          </div>
       </div>
    )

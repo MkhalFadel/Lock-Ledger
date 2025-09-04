@@ -13,6 +13,7 @@ export default function NotesPage()
 
    const [isOpen, setIsOpen] = useState(true);
    const [page, setPage] = useState("notes");
+   const [isDeleting, setIsDeleting] = useState(false);
    
 
    function changePage(page)
@@ -24,9 +25,9 @@ export default function NotesPage()
       <div className={`${styles.bodyContainer} ${isOpen ? styles.sidebarOpen : ""}`}>
          <Search isOpen ={isOpen} setIsOpen={setIsOpen} />
          <SideBar isOpen ={isOpen} setIsOpen={setIsOpen} changePage={changePage} page={page} />
-         {page === "notes" && <NotesSection page={page} />}
-         {page === "ledger" && <Ledger page={page} />}
-         {page === "profile" && <ProfileInfo />}
+         {page === "notes" && <NotesSection isOpen={isOpen} page={page} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />}
+         {page === "ledger" && <Ledger page={page} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />}
+         {page === "profile" && <ProfileInfo isOpen={isOpen} />}
       </div>
    )
 }

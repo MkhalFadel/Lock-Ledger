@@ -73,11 +73,11 @@ input[type="number"]::-webkit-inner-spin-button {
    color: white;
 }
 
-.addBtn {
+.addBtn, .deleteBtn {
    background-color: #00c4cc; 
 }
 
-.addBtn:hover {
+.addBtn:hover, .deleteBtn:hover {
    background-color: #00d9e1; 
    
 }
@@ -89,4 +89,18 @@ input[type="number"]::-webkit-inner-spin-button {
 .cancelBtn:hover{
    background-color: #ff5a4c;
    
+}
+
+@media (max-width: 768px){
+   .inputBox{
+      width: 60%;
+   }
+
+   .typeBox {
+      width: 110%;
+   }
+
+   .formBtn{
+      font-size: 1rem;
+   }
 }

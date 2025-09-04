@@ -2,8 +2,10 @@ import styles from "./ledger.module.css"
 import { useEffect, useState } from "react"
 import FormBox from "../formBox/FormBox"
 import { nanoid } from "nanoid"
+import EditIcon from '../../assets/icons/EditIcon.png'
+import Trash from '../../assets/icons/Trash.png'
 
-export default function({page})
+export default function({page, isDeleting, setIsDeleting})
 {
    useEffect(() => {
       document.title = "LockLedger - Ledger"
@@ -13,6 +15,7 @@ export default function({page})
    const [addingTransaction, setAddingTransaction] = useState(false); // checking if a new transaction is being added
    const [transactionToEdit, setTransaction] = useState(""); // storing a transaction temporarly to edit
    const [isEditing, setIsEditing] = useState(false); // checking if a transaction is being edited or added
+   const [transactionToDelete, setTransactionToDelete] = useState(null);
 
    function addTransaction(date, title, type, amount)
    {
@@ -41,9 +44,11 @@ export default function({page})
       console.log(transactionToEdit);
    }
 
-   function deleteTransaction(id)
+   function deleteTransaction()
    {
-      setTransactions(prev => prev.filter(transaction => transaction.id != id));
+      setTransactions(prev => prev.filter(transaction => transaction.id != transactionToDelete.id));
+      setIsDeleting(false)
+      setTransactionToDelete(null);
    }
    
    const transactionsEl = transactions.map(transaction => {
@@ -58,8 +63,14 @@ export default function({page})
                         setTransaction(transactions.find(t => t.id === transaction.id))
                         setAddingTransaction(true)
                         setIsEditing(true)
-                     }} className={`${styles.tableBtn} ${styles.editBtn}`}>Edit</button>
-                     <button onClick={() => deleteTransaction(transaction.id)} className={`${styles.tableBtn} ${styles.deleteBtn}`}>Delete</button>
+                     }} className={styles.editBtn}>
+                        <img src={EditIcon} alt="editBtn" />
+                     </button>
+                     <button 
+                        onClick={() => {setIsDeleting(true); setTransactionToDelete(transaction)}} 
+                        className={styles.deleteBtn}>
+                        <img src={Trash} alt="deletBtn" />
+                     </button>
                   </td>
             </tr>
       )
@@ -72,14 +83,17 @@ export default function({page})
             <button onClick={() => setAddingTransaction(true)} className={styles.addBtn}>Update Ledger</button>
          </div>
 
-         {addingTransaction && <FormBox 
+         {(addingTransaction || isDeleting )&& (<FormBox 
                                  page={page} 
                                  setAddingTransaction={setAddingTransaction} 
                                  addTransaction={addTransaction} 
                                  transaction={transactionToEdit}
                                  isEditing={isEditing}
                                  editTransaction={editTransaction}
-                                 />}
+                                 isDeleting={isDeleting}
+                                 setIsDeleting={setIsDeleting}
+                                 deleteTransaction={deleteTransaction}
+                                 />)}
 
          <div className={styles.tableContainer}>
             <table className={styles.table}>
