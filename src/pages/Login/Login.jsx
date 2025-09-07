@@ -2,6 +2,7 @@ import styles from './login.module.css'
 import '../../App.css'
 import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
+import lockLedgerLogo from '../../assets/lockLedgerLogo.png'
 
 export default function Login()
 {
@@ -13,7 +14,7 @@ export default function Login()
       <div className={styles.bodyContainer}>
          <form>
             <div className={styles.container}>
-               <img className={styles.logo} src="src/assets/lockLedgerLogo.png" alt="LockLedgerLogo" />
+               <img className={styles.logo} src={lockLedgerLogo} alt="LockLedgerLogo" loading='lazy'/>
                <h1>Welcome to LockLedger</h1>
                <div className={styles.emailContainer}>
                   <label htmlFor="Email">Email</label>

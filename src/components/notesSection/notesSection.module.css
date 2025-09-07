@@ -45,6 +45,10 @@ button{
    background-color: #00868A;
 }
 
+.disable{
+   opacity: 0.7;
+}
+
 .notes{
    /* remove: margin: 70px 0 0 250px; width:100% is fine */
    display: grid;
@@ -59,6 +63,7 @@ button{
    border: none;
    cursor: pointer;
    width: 100%;               /* let the grid handle column width */
+   height: 120px;
    min-height: 100px;
    border-radius: 7px;
    display: flex;
@@ -70,7 +75,7 @@ button{
 
 .notesContent div{
    display: flex;
-   align-items: center;
+   align-items: start;
    justify-content: space-between;
    width: 100%;
 }
@@ -82,12 +87,24 @@ button{
 
 .notesContent h4{
    margin: 15px;
+   width: 100%;
 }
 
 .notesContent p{
-   margin: 0px 0px 0px 15px;
+   margin: auto 0px 10px 15px;
    color: grey;
    font-size: 1.2rem;
+   align-content: baseline;
+}
+
+.recoverBtn{
+   margin-right: 10px;
+   align-self: flex-end;
+}
+
+.recoverBtn img{
+   width: 50px !important;
+   height: 50px !important;
 }
 
 @media (max-width: 768px){

@@ -7,14 +7,12 @@ import saveIcon from '../../../assets/icons/saveIcon.png'
 import Trash from '../../../assets/icons/Trash.png'
 import xIcon from '../../../assets/icons/xIcon.png'
 
-export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes, isDeleting, setIsDeleting})
+export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes, isDeleting, setIsDeleting, view})
 {
    const [isEditing, setIsEditing] = useState(false)  ;
    const [text, setText] = useState("");
    const [editedText,setEditedText] = useState("");
    const [lastEdit, setLastEdit] = useState("");
-
-   console.log(isOpen)
 
    // searching for the clicked note via ID
    const note = notes.find(note => note.id === noteId );
@@ -49,7 +47,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
 
    function deleteNote()
    {
-      setNotes(notes.filter(n => n.id !== note.id))
+      setNotes(prevNotes => prevNotes.map(n => n.id === note.id ? {...n, isDeleted: true} : n))
       setIsDeleting(false);
       setInNote(false);
    }
@@ -83,12 +81,12 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
                <button 
                   onClick={saveChanges} 
                   className={styles.editBtn}
-                  
+                  disabled={view === 'trash'}
                   >
                      <img src={isEditing ? saveIcon : EditIcon} alt={isEditing ? "saveBtn" : "editBtn"} />
                </button>
                
-               {!isEditing && <button onClick={() => setIsDeleting(true)} className={styles.deleteBtn}>
+               {!isEditing && <button onClick={() => setIsDeleting(true)} className={styles.deleteBtn} disabled={view === 'trash'}>
                   <img src={Trash} alt="DeleteBtn" />
                </button>}
 

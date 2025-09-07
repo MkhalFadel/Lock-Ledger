@@ -5,7 +5,7 @@ import { nanoid } from "nanoid"
 import EditIcon from '../../assets/icons/EditIcon.png'
 import Trash from '../../assets/icons/Trash.png'
 
-export default function({page, isDeleting, setIsDeleting})
+export default function({search ,page, isDeleting, setIsDeleting})
 {
    useEffect(() => {
       document.title = "LockLedger - Ledger"
@@ -50,10 +50,14 @@ export default function({page, isDeleting, setIsDeleting})
       setIsDeleting(false)
       setTransactionToDelete(null);
    }
-   
-   const transactionsEl = transactions.map(transaction => {
-      return(
-            <tr key={transaction.id}>
+
+   function displayTransactions()
+   {
+      const filteredTransactions = search ? 
+         transactions.filter(t => t.title.toLowerCase().includes(search.toLowerCase())) : transactions;
+
+      return filteredTransactions.map(transaction => (
+         <tr key={transaction.id}>
                   <td>{transaction.date}</td>
                   <td>{transaction.title}</td>
                   <td>{transaction.type}</td>
@@ -64,17 +68,19 @@ export default function({page, isDeleting, setIsDeleting})
                         setAddingTransaction(true)
                         setIsEditing(true)
                      }} className={styles.editBtn}>
-                        <img src={EditIcon} alt="editBtn" />
+                        <img src={EditIcon} alt="editBtn" loading='lazy' />
                      </button>
                      <button 
                         onClick={() => {setIsDeleting(true); setTransactionToDelete(transaction)}} 
                         className={styles.deleteBtn}>
-                        <img src={Trash} alt="deletBtn" />
+                        <img src={Trash} alt="deletBtn" loading='lazy' />
                      </button>
                   </td>
             </tr>
+         )
       )
-   } )
+   }
+   
 
    return (
       <section className={styles.content}>
@@ -107,7 +113,7 @@ export default function({page, isDeleting, setIsDeleting})
                   </tr>
                </thead>
                <tbody>
-                  {transactionsEl}
+                  {displayTransactions()}
                </tbody>
             </table>
          </div>

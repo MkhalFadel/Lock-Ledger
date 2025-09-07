@@ -5,7 +5,7 @@ import profileIcon from '../../assets/icons/profileIcon.png';
 import { useEffect, useState } from 'react';
 
 
-export default function SideBar(props)
+export default function SideBar({setInNote, view, setView, isOpen, setIsOpen, changePage,page})
 {
 
    const [isMobile, setIsMobile] = useState(window.innerWidth > 768)
@@ -23,24 +23,24 @@ export default function SideBar(props)
    }, [])
 
    return (
-      <nav className={`${styles.sideBar} ${props.isOpen ? styles.open : ""}`}>
-            <button onClick={() => props.setIsOpen(false)} className={styles.closeBtn}>
-               <img src={xIcon} alt="Close Button" />
+      <nav className={`${styles.sideBar} ${isOpen ? styles.open : ""}`}>
+            <button onClick={() => setIsOpen(false)} className={styles.closeBtn}>
+               <img src={xIcon} alt="Close Button" loading='lazy' />
             </button>
-            <img className={styles.logo} src={logo} alt="lockLedgerIcon" />
+            <img className={styles.logo} src={logo} alt="lockLedgerIcon" loading='lazy' />
             <div className={styles.notesNav}>
                <h3>Notes:</h3>
-               <p className={`${props.page === 'notes' ? styles.selected : ""}`} onClick={() => {props.changePage("notes"); isMobile ? props.setIsOpen(false) : ""}}>All Notes</p>
-               <p>Favorites</p>
-               <p>Trash</p>
+               <p className={`${(page === 'notes' && view === 'all') ? styles.selected : ""}`} onClick={() => {changePage("notes"); setView("all"); setInNote(false); isMobile ? setIsOpen(false) : ""}}>All Notes</p>
+               <p className={`${(page === 'notes' && view === 'favorites') ? styles.selected : ""}`} onClick={() => {changePage("notes"); setView("favorites"); setInNote(false); isMobile ? setIsOpen(false) : ""}}>Favorites</p>
+               <p className={`${(page === 'notes' && view === 'trash') ? styles.selected : ""}`} onClick={() => {changePage("notes"); setView("trash"); setInNote(false); isMobile ? setIsOpen(false) : ""}}>Trash</p>
             </div>
             <div className={styles.expNav}>
                <h3>Ledger:</h3>
-               <p className={`${props.page === 'ledger' ? styles.selected : ""}`} onClick={() => {props.changePage("ledger"); isMobile ? props.setIsOpen(false) : ""}}>All Entries</p>
+               <p className={`${page === 'ledger' ? styles.selected : ""}`} onClick={() => {changePage("ledger"); isMobile ? setIsOpen(false) : ""}}>All Entries</p>
                <p>History</p> 
             </div>
-            <div onClick={() => {props.changePage("profile"); isMobile ? props.setIsOpen(false) : ""}} className={styles.profile}>
-               <img className={styles.profilePic} src={profileIcon} alt="profilePic" />
+            <div onClick={() => {changePage("profile"); isMobile ? setIsOpen(false) : ""}} className={styles.profile}>
+               <img className={styles.profilePic} src={profileIcon} alt="profilePic" loading='lazy' />
                <h3 className={styles.username}>MkhalFadel</h3>
             </div>
       </nav>

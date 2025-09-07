@@ -5,15 +5,15 @@ import FormBox from '../formBox/FormBox';
 import { nanoid } from 'nanoid';
 import emptyStarIcon from '../../assets/icons/emptyStarIcon.png'
 import starIcon from '../../assets/icons/starIcon.png'
+import restoreIcon from '../../assets/icons/restoreIcon.png'
 
-export default function NotesSection({isOpen, page, isDeleting, setIsDeleting})
+export default function NotesSection({inNote, setInNote, view, search, isOpen, page, isDeleting, setIsDeleting})
 {
    useEffect(() => {
       document.title = "LockLedger - Notes"
    },[])
    
    const [notes, setNotes] = useState([]) // store the notes
-   const [inNote, setInNote] = useState(false) // check if a note is opened to display the note content
    const [noteId, setNoteId] = useState(null); // setting the id to open the correct note
    const [addingNote, setAddingNote] = useState(false); // check if a note is being added
    
@@ -23,6 +23,13 @@ export default function NotesSection({isOpen, page, isDeleting, setIsDeleting})
       setNoteId(noteId)
    }
 
+   function getFilteredNotes()
+   {
+      if (view === 'all') return notes.filter(n => (!n.isDeleted))
+      if (view === 'favorites') return notes.filter(n => (n.isFavorite && !n.isDeleted))
+      if (view === 'trash') return notes.filter(n => n.isDeleted)
+   }
+
    function addNotes(noteTitle, date)
    {
       setNotes(prevNotes => [...prevNotes,{
@@ -30,7 +37,8 @@ export default function NotesSection({isOpen, page, isDeleting, setIsDeleting})
          title: noteTitle,
          content: "testing",
          date: date,
-         isFavorite: false
+         isFavorite: false,
+         isDeleted: false,
       }])
       console.log(notes)
       setAddingNote(false);
@@ -43,35 +51,55 @@ export default function NotesSection({isOpen, page, isDeleting, setIsDeleting})
       )
    }
 
-   const notesEl = notes.map(note => {
-      return (
+   function recoverNote(id)
+   {
+      setNotes(prevNotes => prevNotes.map(n => n.id === id ? {...n, isDeleted: false} : n))
+   }
+
+   function displayNotes() {
+
+      let filteredNotes = getFilteredNotes() || [];
+
+      if (search) {
+         filteredNotes = filteredNotes.filter(note =>
+            note.title.toLowerCase().includes(search.toLowerCase())
+         );
+      }
+      
+      return filteredNotes.map(note => (
          <div onClick={() => openNote(note.id)} key={note.id} className={styles.notesContent}>
             <div>
                <h4>{note.title}</h4>
-               <button onClick={e => {e.stopPropagation(); addFavorite(note)}}>
-                  {!note.isFavorite && <img src={emptyStarIcon} alt="alt" />}
-                  {note.isFavorite && <img src={starIcon} alt="alt1" />}
+               <button onClick={e => { e.stopPropagation(); addFavorite(note); }}>
+                  {(!note.isFavorite && view !== 'trash') && (<img src={emptyStarIcon} alt="notFavorite" loading='lazy' />)}
+                  {(note.isFavorite && view !== 'trash') && (<img src={starIcon} alt="Favorite" loading='lazy' />)}
+                  {view === 'trash' && <button className={styles.recoverBtn} onClick={e => {e.stopPropagation(); recoverNote(note.id);}}>
+                     <img src={restoreIcon} alt="restoreBtn" />   
+                  </button>}
                </button>
             </div>
             <p>{note.date}</p>
          </div>
-      )
-   })
-   
+));
+   }
 
    return (
       <section className={styles.content}>
          <div className={styles.head}>
             <h2>All Notes</h2>
-            <button onClick={() => inNote ? setInNote(false) : setAddingNote(true)} className={styles.addBtn}>
-               {inNote ? "Return to Notes" : "Add Note +"}
-            </button>
+            {!inNote && <button onClick={() => setAddingNote(true)} className={`${styles.addBtn} ${view !== 'all' ? styles.disable : ''}`} disabled={view !== 'all'}>
+               Add Note +
+            </button>}
+
+            {inNote && <button onClick={() => setInNote(false) } className={styles.addBtn}>
+               Return to Notes
+            </button>}
          </div>
 
          {addingNote && <FormBox addNotes={addNotes} page={page} setAddingNote={setAddingNote} />}
 
          {!inNote && <div className={styles.notes}>
-            {notesEl}
+            {displayNotes()}
          </div>}
 
          {inNote && <Notes 
@@ -82,7 +110,8 @@ export default function NotesSection({isOpen, page, isDeleting, setIsDeleting})
                            notes={notes} 
                            setNotes={setNotes}
                            isDeleting={isDeleting} 
-                           setIsDeleting={setIsDeleting} />}
+                           setIsDeleting={setIsDeleting} 
+                           view={view} />}
       </section>
    )
 }

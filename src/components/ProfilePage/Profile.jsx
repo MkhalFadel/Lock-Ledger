@@ -25,9 +25,9 @@ export default function ProfileInfo({isOpen})
          <div className={styles.profile}>
             <div className={styles.accountInfo}>
                <div className={styles.profilePicContainer}>
-                  <img src={profileIcon} alt="ProfilePicture" className={styles.profilePic} />
+                  <img src={profileIcon} alt="ProfilePicture" className={styles.profilePic} loading='lazy' />
                   <button className={`${styles.editPicBtn} ${!isOpen ? styles.sideBarClose : ""}`}>
-                     <img src={EditIcon} alt="editBtn" />
+                     <img src={EditIcon} alt="editBtn" loading='lazy' />
                   </button>
                </div>
                <div className={styles.info}>
@@ -36,14 +36,14 @@ export default function ProfileInfo({isOpen})
                      <div className={styles.editInfo}>
                         <input id='UserName' type="text" value="MkhalFadel" disabled={!isEditingName} />
                         <button onClick={() => setIsEditingName(true)}>
-                           {!isEditingName && <img src={EditIcon} alt="editBtn" />}
+                           {!isEditingName && <img src={EditIcon} alt="editBtn" loading='lazy' />}
                         </button>
                         {isEditingName && <div className={styles.changesBtns}>
                               <button onClick={() => setIsEditingName(false)}>
-                                 <img src={saveIcon} alt="editBtn" />  
+                                 <img src={saveIcon} alt="editBtn" loading='lazy' />  
                               </button>
                               <button onClick={() => setIsEditingName(false)}>
-                                 <img src={xIcon} alt="discardBtn" />
+                                 <img src={xIcon} alt="discardBtn" loading='lazy' />
                               </button>
                            </div>}
                      </div>
@@ -54,14 +54,14 @@ export default function ProfileInfo({isOpen})
                      <div className={styles.editInfo}>
                         <input id='email' type="email" value="fadel.mokahal@gmail.com" disabled={!isEditingEmail} />
                         <button onClick={() => setIsEditingEmail(true)}>
-                           {!isEditingEmail && <img src={EditIcon} alt="editBtn" />}
+                           {!isEditingEmail && <img src={EditIcon} alt="editBtn" loading='lazy' />}
                         </button>
                         {isEditingEmail && <div className={styles.changesBtns}>
                               <button onClick={() => setIsEditingEmail(false)}>
-                                 <img src={saveIcon} alt="editBtn" />  
+                                 <img src={saveIcon} alt="editBtn" loading='lazy' />  
                               </button>
                               <button onClick={() => setIsEditingEmail(false)}>
-                                 <img src={xIcon} alt="discardBtn" />
+                                 <img src={xIcon} alt="discardBtn" loading='lazy' />
                               </button>
                            </div>}
                      </div>
@@ -72,14 +72,14 @@ export default function ProfileInfo({isOpen})
                      <div className={styles.editInfo}>
                         <input id='password' type="password" value="fadel5000" disabled={!isEditingPassword} />
                         <button onClick={() => setIsEditingPassword(true)}>
-                           {!isEditingPassword && <img src={EditIcon} alt="editBtn" />}
+                           {!isEditingPassword && <img src={EditIcon} alt="editBtn" loading='lazy' />}
                         </button>
                         {isEditingPassword && <div className={styles.changesBtns}>
                               <button onClick={() => setIsEditingPassword(false)}>
-                                 <img src={saveIcon} alt="editBtn" />  
+                                 <img src={saveIcon} alt="editBtn" loading='lazy' />  
                               </button>
                               <button onClick={() => setIsEditingPassword(false)}>
-                                 <img src={xIcon} alt="discardBtn" />
+                                 <img src={xIcon} alt="discardBtn" loading='lazy' />
                               </button>
                            </div>}
                      </div>
