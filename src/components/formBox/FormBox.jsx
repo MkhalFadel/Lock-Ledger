@@ -1,9 +1,9 @@
 import styles from "./formBox.module.css";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function FormBox({page, 
                                  setAddingNote, 
-                                 addNotes, 
+                                 addNote, 
                                  addTransaction, 
                                  setAddingTransaction, 
                                  transaction, 
@@ -12,7 +12,8 @@ export default function FormBox({page,
                                  isDeleting,
                                  setIsDeleting,
                                  deleteNote,
-                                 deleteTransaction})
+                                 deleteTransaction,
+                                 currentUser})
 {
 
    // getting today's date
@@ -25,15 +26,24 @@ export default function FormBox({page,
    const [type, setType] = useState(isEditing ? transaction.type : "");
    const [amount, setAmount] = useState(isEditing ? transaction.amount : 0.00);
    
+   const titleRef = useRef(null);
+
+   useEffect(() => {
+      if(titleRef.current)
+      {
+         titleRef.current.focus();
+      }
+   }, [])
+
    return (
       <div className={styles.container}>
          <div className={styles.inputBox}>
                {/* appears when a new note is being added */}
             {page === "notes" && !isDeleting &&  (<div>
                <h4>Add New Note</h4>
-               <input onChange={e => setTitle(e.target.value)} placeholder="Add Title" value={title} type="text" />
+               <input onChange={e => setTitle(e.target.value)} ref={titleRef} placeholder="Add Title" value={title} type="text" />
                <div className={styles.btns}>
-                  <button onClick={() => addNotes(title, date)} className={`${styles.formBtn} ${styles.addBtn}`}>Add Note</button>
+                  <button onClick={() => addNote(currentUser[0].id, title, "This is a New Note", today)} className={`${styles.formBtn} ${styles.addBtn}`}>Add Note</button>
                   <button onClick={() => setAddingNote(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                </div>
             </div>)}
@@ -53,7 +63,7 @@ export default function FormBox({page,
             {page === "ledger" && !isDeleting && (<div>
                <h4>Update Ledger</h4>
                <input onChange={e => setDate(e.target.value)} value={date} type="date" />
-               <input onChange={e => setTitle(e.target.value)} placeholder="Add Title" value={title} type="text" />
+               <input onChange={e => setTitle(e.target.value)} ref={titleRef} placeholder="Add Title" value={title} type="text" />
                <select value={type} onChange={e => setType(e.target.value)} className={styles.typeBox} name="type" id="type" >
                   <option value="" disabled>Select Type</option>
                   <option value="Income">Income</option>

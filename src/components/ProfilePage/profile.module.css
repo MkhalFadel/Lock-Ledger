@@ -94,6 +94,7 @@
 
 .info div input {
    width: 100%;
+   max-width: 365.5px;
    background-color: #143c5a;
    border: 1px solid #003C4D;
    color: #ffffff;
@@ -105,12 +106,32 @@
    margin: 5px 0 15px 0;
 }
 
+.info div input:focus {
+   border-color: #00B4D8;
+   box-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
+}
+
 .editInfo{
    display: flex;
    flex-direction: row !important;
    align-items: center !important;
    justify-content: space-between !important;
    width: 100%;
+}
+
+.editInfo div{
+   position: relative;
+}
+
+.showBtn{
+   position: absolute;
+   top: 2px;
+   right: 7px;
+}
+
+.showBtn img {
+   width: 50px;
+   height: 50px;
 }
 
 .editInfo button{
@@ -189,6 +210,10 @@
       margin-left: 5px;
    }
 
+   .info div input {
+      max-width: 291px;
+   }
+
    .info label{
       margin-left: 5px;
    }
@@ -198,4 +223,5 @@
       width: 90%;
       margin: 10px auto 0;
    }
+
 }  

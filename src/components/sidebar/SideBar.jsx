@@ -5,10 +5,10 @@ import profileIcon from '../../assets/icons/profileIcon.png';
 import { useEffect, useState } from 'react';
 
 
-export default function SideBar({setInNote, view, setView, isOpen, setIsOpen, changePage,page})
+export default function SideBar({isMobile, setIsMobile, setInNote, view, setView, isOpen, setIsOpen, changePage, page, currentUser})
 {
 
-   const [isMobile, setIsMobile] = useState(window.innerWidth > 768)
+   
    
    useEffect(() => {
       function handleResize()
@@ -41,7 +41,7 @@ export default function SideBar({setInNote, view, setView, isOpen, setIsOpen, ch
             </div>
             <div onClick={() => {changePage("profile"); isMobile ? setIsOpen(false) : ""}} className={styles.profile}>
                <img className={styles.profilePic} src={profileIcon} alt="profilePic" loading='lazy' />
-               <h3 className={styles.username}>MkhalFadel</h3>
+               <h3 className={styles.username}>{currentUser[0].username}</h3>
             </div>
       </nav>
    )

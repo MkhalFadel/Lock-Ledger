@@ -1,11 +1,12 @@
 import styles from "./notes.module.css"
 import FormBox from "../../formBox/FormBox";
-import { useState,useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { DAYS, MONTHS, formatTime } from "../../../utils/utility";
 import EditIcon from '../../../assets/icons/EditIcon.png'
 import saveIcon from '../../../assets/icons/saveIcon.png'
 import Trash from '../../../assets/icons/Trash.png'
 import xIcon from '../../../assets/icons/xIcon.png'
+import { updateNote, updateNotesContent } from "../../../API/notes";
 
 export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes, isDeleting, setIsDeleting, view})
 {
@@ -16,6 +17,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
 
    // searching for the clicked note via ID
    const note = notes.find(note => note.id === noteId );
+   const textareaRef = useRef(null);
 
    // setting the text variable to the notes content if found
    useEffect(() => {
@@ -25,9 +27,18 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
    useEffect(() => {
    document.body.style.overflow = "hidden";
    return () => {
-      document.body.style.overflow = "";
-   };
-}, []);
+         document.body.style.overflow = "";
+      };
+   }, []);
+
+   useEffect(() => {
+      if(isEditing && textareaRef.current)
+      {
+         const input = textareaRef.current;
+         input.focus();
+         input.setSelectionRange(input.value.length, input.value.length);
+      }
+   }, [isEditing])
    
    function lastEditTime()
    {
@@ -45,18 +56,21 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
       }
    }
 
-   function deleteNote()
+   async function handleDeleteNote()
    {
       setNotes(prevNotes => prevNotes.map(n => n.id === note.id ? {...n, isDeleted: true} : n))
       setIsDeleting(false);
       setInNote(false);
+      await updateNote(note.id, {isDeleted: true})
    }
    
-   function saveChanges()
+   async function saveChanges()
    {
       if(isEditing){
          setText(editedText || text);
+         note.content = editedText ?? text;  
          lastEditTime();   
+         await updateNotesContent(note.id, (editedText ?? text))
       }else{
          setEditedText(text)
       }
@@ -99,6 +113,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
          </div>
          
          {isEditing && <textarea 
+            ref={textareaRef}
             onChange={(event) => setEditedText(event.target.value)} 
             className={`${styles.textEdit} ${!isOpen ? styles.sideBarClose : ""}`} 
             name="notesContent" id="0">
@@ -110,7 +125,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
          </div>}
 
          {isDeleting && <FormBox 
-                                 deleteNote={deleteNote} 
+                                 deleteNote={handleDeleteNote} 
                                  page={page} 
                                  isDeleting={isDeleting} 
                                  setIsDeleting={setIsDeleting} />}

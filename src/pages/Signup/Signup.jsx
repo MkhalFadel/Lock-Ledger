@@ -1,14 +1,46 @@
 import styles from './signup.module.css'
 import '../../App.css'
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import lockLedgerLogo from '../../assets/lockLedgerLogo.png'
+import showIcon from '../../assets/icons/showIcon.png'
+import hideIcon from '../../assets/icons/hideIcon.png'
+import  createUser from '../../API/users'
+import { getUserInfo } from '../../API/users'
+import { useNavigate } from 'react-router-dom'
 
-export default function Signup()
+export default function Signup({setCurrentUser})
 {
    useEffect(() => {
       document.title = "LockLedger - Signup"
    },[])
+
+   const [username, setUsername] = useState("");
+   const [email, setEmail] = useState("");
+   const [password, setPassword] = useState("");
+   const [pin, setPin] = useState("");
+
+   const [isShowing, setIsShowing] = useState(false);
+
+   const navigate = useNavigate();
+
+   async function signUp()
+   {
+      setCurrentUser([]);
+
+      const newUser = await createUser(username, email, password, pin)
+      const userInfo = await getUserInfo(email);
+
+      setCurrentUser(userInfo)
+
+      if(userInfo) navigate("/Lock-Ledger");
+   }
+
+   function showPassword(e)
+   {
+      e.preventDefault();
+      setIsShowing(prev => !prev)
+   }
 
    return (
       <div className={styles.bodyContainer}>
@@ -18,27 +50,34 @@ export default function Signup()
                <h1>Welcome to LockLedger</h1>
                <div className={styles.emailContainer}>
                   <label htmlFor="Email">Email</label>
-                  <input placeholder='example@gmail.com' id="Email" type="email" className={styles.email} />
+                  <input onChange={e => setEmail(e.target.value)} placeholder='example@gmail.com' id="Email" type="email" className={styles.email} />
                </div>
 
                <div className={styles.passwordContainer}>
                   <label htmlFor="password">Password</label>
-                  <input placeholder='password123' id="password" type="password" className={styles.password} />
+                  <div>
+                     {!isShowing && <input onChange={e => setPassword(e.target.value)} value={password} placeholder='password123' id="password" type="password" className={styles.password} />}
+                     {isShowing && <input onChange={e => setPassword(e.target.value)} value={password} placeholder='password123' id="password" type="text" className={styles.password} />}
+                     <button onClick={e => showPassword(e)} className={styles.showBtn}>
+                        {!isShowing && <img src={showIcon} alt="showIcon" />}
+                        {isShowing && <img src={hideIcon} alt="showIcon" />}
+                     </button>
+                  </div>
                </div>
 
                <div className={styles.userNameContainer}>
                   <label htmlFor="username">Username</label>
-                  <input placeholder='Username' id="username" type="text" className={styles.username} />
+                  <input onChange={e => setUsername(e.target.value)} placeholder='Username' id="username" type="text" className={styles.username} />
                </div>
 
                <div className={styles.pinContainer}>
                   <label htmlFor="pin">Pin</label>
-                  <input placeholder='Pin' id="pin" type="text" className={styles.pin} />
+                  <input onChange={e => setPin(e.target.value)} placeholder='Pin' id="pin" type="text" className={styles.pin} />
                </div>
 
                <Link to="/Lock-Ledger/login" className={styles.signUpLink}>Have an account? <span>Login</span></Link>
 
-               <button className={styles.loginBtn}>Signup</button>
+               <button onClick={e => {e.preventDefault(); signUp()}} className={styles.loginBtn}>Signup</button>
             </div>
          </form>
       </div>

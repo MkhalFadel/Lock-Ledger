@@ -85,6 +85,21 @@ form{
    box-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
 }
 
+.passwordContainer div{
+   position: relative;
+}
+
+.showBtn{
+   position: absolute;
+   top: -3px;
+   right: -15px;
+}
+
+.showBtn img{
+   width: 50px;
+   height: 50px;
+}
+
 .signUpLink{
    color: #B3B3B3;
    text-decoration: none;

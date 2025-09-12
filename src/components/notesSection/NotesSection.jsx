@@ -2,12 +2,13 @@ import styles from './notesSection.module.css';
 import { useEffect, useState } from 'react';
 import Notes from './notes/Notes';
 import FormBox from '../formBox/FormBox';
-import { nanoid } from 'nanoid';
 import emptyStarIcon from '../../assets/icons/emptyStarIcon.png'
 import starIcon from '../../assets/icons/starIcon.png'
 import restoreIcon from '../../assets/icons/restoreIcon.png'
+import notesNotFound from '../../assets/icons/noNotesFound.png';
+import { createNote, fetchNotes, updateNote, deleteAll } from '../../API/notes';   
 
-export default function NotesSection({inNote, setInNote, view, search, isOpen, page, isDeleting, setIsDeleting})
+export default function NotesSection({inNote, setInNote, view, search, isOpen, page, isDeleting, setIsDeleting, currentUser})
 {
    useEffect(() => {
       document.title = "LockLedger - Notes"
@@ -17,47 +18,68 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
    const [noteId, setNoteId] = useState(null); // setting the id to open the correct note
    const [addingNote, setAddingNote] = useState(false); // check if a note is being added
    
+   const notesExist = (notes.length <= 0 || notes.every(n => n.isDeleted)) && view === 'all'
+   const notesFavoriteExist = notes.every(n => !n.isFavorite) && view === 'favorites'
+   console.log(view)
+   const notesDeletedExist = notes.every(n => !n.isDeleted) && view === 'trash';
+      //console.log(noteslength)
+
+   useEffect(() => {
+      async function loadNotes()
+      {
+         const userNotes = await fetchNotes(currentUser[0].id);
+         setNotes(userNotes)
+      }
+
+      loadNotes();
+   }, [])
+   
    function openNote(noteId)
    {
       setInNote(true);
       setNoteId(noteId)
    }
+   
+   async function addNote(userId, title, content, date)
+   {
+      setAddingNote(false)
+      const newNote = await createNote(userId, title, content, date)
+      setNotes(prevNotes => [newNote ,...prevNotes]);
+   }
 
    function getFilteredNotes()
    {
-      if (view === 'all') return notes.filter(n => (!n.isDeleted))
-      if (view === 'favorites') return notes.filter(n => (n.isFavorite && !n.isDeleted))
-      if (view === 'trash') return notes.filter(n => n.isDeleted)
+      if (view === 'all' && notes) return notes.filter(n => (!n.isDeleted))
+      if (view === 'favorites' && notes) return notes.filter(n => (n.isFavorite && !n.isDeleted))
+      if (view === 'trash' && notes) return notes.filter(n => n.isDeleted)
    }
-
-   function addNotes(noteTitle, date)
-   {
-      setNotes(prevNotes => [...prevNotes,{
-         id: nanoid(),
-         title: noteTitle,
-         content: "testing",
-         date: date,
-         isFavorite: false,
-         isDeleted: false,
-      }])
-      console.log(notes)
-      setAddingNote(false);
-   }
-
-   function addFavorite(note)
+   
+   async function addFavorite(note)
    {
       setNotes(prev => 
          prev.map(n => n.id === note.id ? {...n, isFavorite: !n.isFavorite} : n)
       )
+      await updateNote(note.id, {isFavorite: !note.isFavorite})
    }
 
-   function recoverNote(id)
+   async function recoverNote(id)
    {
       setNotes(prevNotes => prevNotes.map(n => n.id === id ? {...n, isDeleted: false} : n))
+      await updateNote(id, {isDeleted: false})
+   }
+
+   async function handleDeleteAll()
+   {
+      try{
+         setNotes(prevNotes => prevNotes.filter(n => !n.isDeleted))
+         await deleteAll(notes)
+      }catch(err){
+         console.error("Failed to delete all notes: ", err)
+      }
    }
 
    function displayNotes() {
-
+      
       let filteredNotes = getFilteredNotes() || [];
 
       if (search) {
@@ -80,23 +102,33 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
             </div>
             <p>{note.date}</p>
          </div>
-));
+
+   ));
    }
 
    return (
       <section className={styles.content}>
          <div className={styles.head}>
-            <h2>All Notes</h2>
-            {!inNote && <button onClick={() => setAddingNote(true)} className={`${styles.addBtn} ${view !== 'all' ? styles.disable : ''}`} disabled={view !== 'all'}>
-               Add Note +
-            </button>}
+            <h2>{view === 'all' ? "All Notes" : view === 'favorites' ? "Favorites" : "Trash"}</h2>
+            <div>
+               {view === 'trash' && <button onClick={handleDeleteAll} className={styles.deleteAllBtn}>Delete All</button>}
 
-            {inNote && <button onClick={() => setInNote(false) } className={styles.addBtn}>
-               Return to Notes
-            </button>}
+               {!inNote && <button onClick={() => setAddingNote(true)} className={`${styles.addBtn} ${view !== 'all' ? styles.disable : ''}`} disabled={view !== 'all'}>
+                  Add Note +
+               </button>}
+
+               {inNote && <button onClick={() => setInNote(false) } className={styles.addBtn}>
+                  Return to Notes
+               </button>}
+            </div>
          </div>
 
-         {addingNote && <FormBox addNotes={addNotes} page={page} setAddingNote={setAddingNote} />}
+         {notesExist && <img id='1' src={notesNotFound} alt="notesNotFound" className={styles.noNotesImg} />}
+         {notesFavoriteExist && <img id='2' src={notesNotFound} alt="notesNotFound" className={styles.noNotesImg} />}
+         {notesDeletedExist && <img id='3' src={notesNotFound} alt="notesNotFound" className={styles.noNotesImg} />}
+
+
+         {addingNote && <FormBox currentUser={currentUser} addNote={addNote} page={page} setAddingNote={setAddingNote} />}
 
          {!inNote && <div className={styles.notes}>
             {displayNotes()}

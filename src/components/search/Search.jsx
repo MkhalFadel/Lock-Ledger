@@ -1,9 +1,15 @@
 import styles from './search.module.css'
 import humMenu from '../../assets/icons/humMenu.png'
-//import { useState } from 'react'
+import { useEffect } from 'react'
 
-export default function Search({search, setSearch, isOpen, setIsOpen})
+export default function Search({isMobile, search, setSearch, isOpen, setIsOpen})
 {
+
+   useEffect(() => {
+      isMobile ? setIsOpen(true) : setIsOpen(false)
+
+   }, [])
+
    return(
       <div className={`${styles.searchContainer} ${isOpen ? styles.open : ""}`}>
          {!isOpen && <button onClick={() => {setIsOpen(true)}} className={styles.humMenuBtn}>

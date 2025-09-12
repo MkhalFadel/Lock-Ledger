@@ -1,42 +1,48 @@
 import styles from "./ledger.module.css"
 import { useEffect, useState } from "react"
 import FormBox from "../formBox/FormBox"
-import { nanoid } from "nanoid"
 import EditIcon from '../../assets/icons/EditIcon.png'
 import Trash from '../../assets/icons/Trash.png'
+import { addTransaction, fetchLedger, editLedger, deleteLedger } from "../../API/ledger"
 
-export default function({search ,page, isDeleting, setIsDeleting})
+export default function({search ,page, isDeleting, setIsDeleting, currentUser})
 {
    useEffect(() => {
       document.title = "LockLedger - Ledger"
    },[])
 
+   useEffect(() => {
+      async function loadLedgerData()
+      {
+         const userLedger = await fetchLedger(currentUser[0].id);
+         setTransactions(userLedger);
+      }
+
+      loadLedgerData();
+   }, [])
+
    const [transactions, setTransactions] = useState([]); // storing all the transactions
    const [addingTransaction, setAddingTransaction] = useState(false); // checking if a new transaction is being added
-   const [transactionToEdit, setTransaction] = useState(""); // storing a transaction temporarly to edit
+   const [transactionToEdit, setTransactionToEdit] = useState(""); // storing a transaction temporarly to edit
    const [isEditing, setIsEditing] = useState(false); // checking if a transaction is being edited or added
    const [transactionToDelete, setTransactionToDelete] = useState(null);
 
-   function addTransaction(date, title, type, amount)
+   async function handleAddTransaction(date, title, type, amount)
    {
-      setTransactions(prevActions => [...prevActions, {
-         id: nanoid(),
-         date: date,
-         title: title,
-         type: type,
-         amount: amount
-      }])
+      const newTransaction = await addTransaction(currentUser[0].id, date, title, type, amount);
+      setTransactions(prevActions => [newTransaction, ...prevActions])
       setAddingTransaction(false);
       setIsEditing(false);
       setTransaction("");
       console.log(transactions)
    }
 
-   function editTransaction(date, title, type, amount)
+   async function editTransaction(date, title, type, amount)
    {
       // looping through the original state changing only the one matching the id 
+      const editedData = await editLedger(transactionToEdit.id, date, title, type, amount) 
       setTransactions(prev => 
-         prev.map(t => t.id === transactionToEdit.id ? {...t, date, title, type, amount} : t) 
+         prev.map(t => t.id === transactionToEdit.id ? {...t, date: editedData.date, title: editedData.title, type: editedData.type, amount: editedData.amount} : t) 
       );
       setAddingTransaction(false)
       setIsEditing(false)
@@ -44,11 +50,12 @@ export default function({search ,page, isDeleting, setIsDeleting})
       console.log(transactionToEdit);
    }
 
-   function deleteTransaction()
+   async function deleteTransaction()
    {
-      setTransactions(prev => prev.filter(transaction => transaction.id != transactionToDelete.id));
       setIsDeleting(false)
       setTransactionToDelete(null);
+      setTransactions(prev => prev.filter(transaction => transaction.id != transactionToDelete.id));
+      await deleteLedger(transactionToDelete.id)
    }
 
    function displayTransactions()
@@ -56,7 +63,7 @@ export default function({search ,page, isDeleting, setIsDeleting})
       const filteredTransactions = search ? 
          transactions.filter(t => t.title.toLowerCase().includes(search.toLowerCase())) : transactions;
 
-      return filteredTransactions.map(transaction => (
+      if(transactions) return filteredTransactions.map(transaction => (
          <tr key={transaction.id}>
                   <td>{transaction.date}</td>
                   <td>{transaction.title}</td>
@@ -64,7 +71,7 @@ export default function({search ,page, isDeleting, setIsDeleting})
                   <td>${transaction.amount}</td>
                   <td>
                      <button onClick={() => {
-                        setTransaction(transactions.find(t => t.id === transaction.id))
+                        setTransactionToEdit(transactions.find(t => t.id === transaction.id))
                         setAddingTransaction(true)
                         setIsEditing(true)
                      }} className={styles.editBtn}>
@@ -92,7 +99,7 @@ export default function({search ,page, isDeleting, setIsDeleting})
          {(addingTransaction || isDeleting )&& (<FormBox 
                                  page={page} 
                                  setAddingTransaction={setAddingTransaction} 
-                                 addTransaction={addTransaction} 
+                                 addTransaction={handleAddTransaction} 
                                  transaction={transactionToEdit}
                                  isEditing={isEditing}
                                  editTransaction={editTransaction}

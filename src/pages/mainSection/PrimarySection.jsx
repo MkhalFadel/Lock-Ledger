@@ -8,7 +8,7 @@ import { useState } from 'react'
 import Ledger from '../../components/ledger/Ledger'
 import ProfileInfo from '../../components/ProfilePage/Profile'
 
-export default function NotesPage()
+export default function NotesPage({currentUser, setCurrentUser})
 {
    const [view, setView] = useState("all"); // check view of page to display intended notes
    const [search, setSearch] = useState(""); // passing search value to notes/ledger pages
@@ -16,6 +16,7 @@ export default function NotesPage()
    const [isOpen, setIsOpen] = useState(true); // checking if sidebar is open to change layout
    const [page, setPage] = useState("notes"); // check page
    const [isDeleting, setIsDeleting] = useState(false); // check if a user is deleting a note or transaction to display a message
+   const [isMobile, setIsMobile] = useState(window.innerWidth > 768)
    
 
    function changePage(page)
@@ -23,13 +24,15 @@ export default function NotesPage()
       setPage(page);
    }
 
+   console.log(currentUser)
+
    return (
       <div className={`${styles.bodyContainer} ${isOpen ? styles.sidebarOpen : ""}`}>
-         <Search isOpen ={isOpen} setIsOpen={setIsOpen} search={search} setSearch={setSearch} />
-         <SideBar setInNote={setInNote} view={view} setView={setView} isOpen ={isOpen} setIsOpen={setIsOpen} changePage={changePage} page={page} />
-         {page === "notes" && <NotesSection inNote={inNote} setInNote={setInNote} view={view} search={search} isOpen={isOpen} page={page} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />}
-         {page === "ledger" && <Ledger search={search} page={page} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />}
-         {page === "profile" && <ProfileInfo isOpen={isOpen} />}
+         <Search isOpen ={isOpen} setIsOpen={setIsOpen} search={search} setSearch={setSearch} isMobile={isMobile} />
+         <SideBar isMobile={isMobile} setIsMobile={setIsMobile} currentUser={currentUser} setInNote={setInNote} view={view} setView={setView} isOpen ={isOpen} setIsOpen={setIsOpen} changePage={changePage} page={page} />
+         {page === "notes" && <NotesSection currentUser={currentUser} inNote={inNote} setInNote={setInNote} view={view} search={search} isOpen={isOpen} page={page} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />}
+         {page === "ledger" && <Ledger currentUser={currentUser} search={search} page={page} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />}
+         {page === "profile" && <ProfileInfo isOpen={isOpen} currentUser={currentUser} setCurrentUser={setCurrentUser} />}
       </div>
    )
 }
