@@ -20,7 +20,6 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
    
    const notesExist = (notes.length <= 0 || notes.every(n => n.isDeleted)) && view === 'all'
    const notesFavoriteExist = notes.every(n => !n.isFavorite) && view === 'favorites'
-   console.log(view)
    const notesDeletedExist = notes.every(n => !n.isDeleted) && view === 'trash';
       //console.log(noteslength)
 
@@ -28,7 +27,7 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
       async function loadNotes()
       {
          const userNotes = await fetchNotes(currentUser[0].id);
-         setNotes(userNotes)
+         userNotes ? setNotes(userNotes) : setNotes([]);
       }
 
       loadNotes();

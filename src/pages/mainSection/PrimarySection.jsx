@@ -24,8 +24,6 @@ export default function NotesPage({currentUser, setCurrentUser})
       setPage(page);
    }
 
-   console.log(currentUser)
-
    return (
       <div className={`${styles.bodyContainer} ${isOpen ? styles.sidebarOpen : ""}`}>
          <Search isOpen ={isOpen} setIsOpen={setIsOpen} search={search} setSearch={setSearch} isMobile={isMobile} />

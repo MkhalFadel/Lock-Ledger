@@ -8,6 +8,7 @@ import xIcon from '../../assets/icons/xIcon.png'
 import showIcon from '../../assets/icons/showIcon.png'
 import hideIcon from '../../assets/icons/hideIcon.png'
 import { updateInfo } from '../../API/users';
+import { removeLocalStorage } from '../../utils/localStorage';
 
 export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
 {
@@ -57,7 +58,8 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
 
    function logout()
    {
-      setCurrentUser(null);
+      setCurrentUser(0);
+      removeLocalStorage("currentUser");
       navigate('/Lock-Ledger/login');
    }
 

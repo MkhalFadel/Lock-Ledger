@@ -7,6 +7,7 @@ import showIcon from '../../assets/icons/showIcon.png'
 import hideIcon from '../../assets/icons/hideIcon.png'
 import { getUserInfo } from '../../API/users'
 import { useNavigate } from 'react-router-dom'
+import { setLocalStorage } from '../../utils/localStorage'
 
 export default function Login({currentUser, setCurrentUser})
 {
@@ -28,7 +29,7 @@ export default function Login({currentUser, setCurrentUser})
       if(userInfo && userInfo.password === password)
       {
          setCurrentUser(userInfo)
-         //localStorage.setItem("currentUser", JSON.stringify(userInfo))
+         setLocalStorage("currentUser", userInfo);
          navigate("/Lock-Ledger/"); 
       } 
 
@@ -42,7 +43,7 @@ export default function Login({currentUser, setCurrentUser})
 
    return (
       <div className={styles.bodyContainer}>
-         <form>
+         <form onSubmit={e => {e.preventDefault(); login(email);}}>
             <div className={styles.container}>
                <img className={styles.logo} src={lockLedgerLogo} alt="LockLedgerLogo" loading='lazy'/>
                <h1>Welcome to LockLedger</h1>
@@ -56,7 +57,7 @@ export default function Login({currentUser, setCurrentUser})
                   <div>
                      {!isShowing && <input onChange={e => setPassword(e.target.value)} value={password} placeholder='password123' id="password" type="password" className={styles.password} />}
                      {isShowing && <input onChange={e => setPassword(e.target.value)} value={password} placeholder='password123' id="password" type="text" className={styles.password} />}
-                     <button onClick={e => showPassword(e)} className={styles.showBtn}>
+                     <button type='button' onClick={e => showPassword(e)} className={styles.showBtn}>
                         {!isShowing && <img src={showIcon} alt="showIcon" />}
                         {isShowing && <img src={hideIcon} alt="showIcon" />}
                      </button>
@@ -65,7 +66,7 @@ export default function Login({currentUser, setCurrentUser})
 
                <Link to="/Lock-Ledger/signup" className={styles.signUpLink}>Don't Have an account? <span>Signup</span></Link>
 
-               <button onClick={e => {e.preventDefault(); login(email)}} className={styles.loginBtn}>Login</button>
+               <button type='submit' className={styles.loginBtn}>Login</button>
             </div>
          </form>
       </div>

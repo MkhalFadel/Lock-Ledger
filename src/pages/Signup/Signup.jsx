@@ -8,6 +8,7 @@ import hideIcon from '../../assets/icons/hideIcon.png'
 import  createUser from '../../API/users'
 import { getUserInfo } from '../../API/users'
 import { useNavigate } from 'react-router-dom'
+import { setLocalStorage } from '../../utils/localStorage'
 
 export default function Signup({setCurrentUser})
 {
@@ -34,6 +35,7 @@ export default function Signup({setCurrentUser})
       setCurrentUser(userInfo)
 
       if(userInfo) navigate("/Lock-Ledger");
+      setLocalStorage("currentUser", userInfo)
    }
 
    function showPassword(e)
@@ -44,7 +46,7 @@ export default function Signup({setCurrentUser})
 
    return (
       <div className={styles.bodyContainer}>
-         <form>
+         <form onSubmit={e => {e.preventDefault(); signUp()}}>
             <div className={styles.container}>
                <img className={styles.logo} src={lockLedgerLogo} alt="LockLedgerLogo" loading='lazy'/>
                <h1>Welcome to LockLedger</h1>
@@ -58,7 +60,7 @@ export default function Signup({setCurrentUser})
                   <div>
                      {!isShowing && <input onChange={e => setPassword(e.target.value)} value={password} placeholder='password123' id="password" type="password" className={styles.password} />}
                      {isShowing && <input onChange={e => setPassword(e.target.value)} value={password} placeholder='password123' id="password" type="text" className={styles.password} />}
-                     <button onClick={e => showPassword(e)} className={styles.showBtn}>
+                     <button type='button' onClick={e => showPassword(e)} className={styles.showBtn}>
                         {!isShowing && <img src={showIcon} alt="showIcon" />}
                         {isShowing && <img src={hideIcon} alt="showIcon" />}
                      </button>
@@ -77,7 +79,7 @@ export default function Signup({setCurrentUser})
 
                <Link to="/Lock-Ledger/login" className={styles.signUpLink}>Have an account? <span>Login</span></Link>
 
-               <button onClick={e => {e.preventDefault(); signUp()}} className={styles.loginBtn}>Signup</button>
+               <button type='submit' className={styles.loginBtn}>Signup</button>
             </div>
          </form>
       </div>
