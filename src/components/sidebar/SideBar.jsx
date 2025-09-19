@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react';
 
 export default function SideBar({isMobile, setIsMobile, setInNote, view, setView, isOpen, setIsOpen, changePage, page, currentUser})
 {
-
-   
    
    useEffect(() => {
       function handleResize()
@@ -41,7 +39,7 @@ export default function SideBar({isMobile, setIsMobile, setInNote, view, setView
             </div>
             <div onClick={() => {changePage("profile"); isMobile ? setIsOpen(false) : ""}} className={styles.profile}>
                <img className={styles.profilePic} src={profileIcon} alt="profilePic" loading='lazy' />
-               <h3 className={styles.username}>{currentUser[0].username}</h3>
+               <h3 className={styles.username}>{currentUser.username}</h3>
             </div>
       </nav>
    )

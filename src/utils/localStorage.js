@@ -21,6 +21,14 @@ export function getLocalStorage(key)
    }
 }
 
+export function updateLocalStorage(key, updates)
+{
+   let userData = JSON.parse(localStorage.getItem(key));
+   if(Object.keys(userData).length > 0)
+      userData = {...userData, ...updates};
+   localStorage.setItem("currentUser", JSON.stringify(userData));
+}
+
 export function removeLocalStorage(key)
 {
    try

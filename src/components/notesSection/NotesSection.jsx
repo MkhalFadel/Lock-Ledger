@@ -26,7 +26,7 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
    useEffect(() => {
       async function loadNotes()
       {
-         const userNotes = await fetchNotes(currentUser[0].id);
+         const userNotes = await fetchNotes(currentUser.id);
          userNotes ? setNotes(userNotes) : setNotes([]);
       }
 

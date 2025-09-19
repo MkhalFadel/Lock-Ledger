@@ -28,10 +28,11 @@ form{
    gap: 20px;
    max-width: 550px;
    width: 100%;
-   height: 450px;
+   height: fit-content;
+   min-height: 450px;
    border-radius: 7px;
    background: linear-gradient(135deg, #0A1E33, #003146);
-
+   padding-bottom: 15px;
 }
 
 .logo{
@@ -122,6 +123,16 @@ form{
 
 .loginBtn:hover{
    background: linear-gradient(135deg, #005B6E, #003E54);
+}
+
+.errorMsg{
+   margin-top: 5px;
+   text-align: center;
+   color: rgb(255, 70, 64);
+}
+
+.invalid{
+   border: 1px solid rgb(255, 70, 64);
 }
 
 

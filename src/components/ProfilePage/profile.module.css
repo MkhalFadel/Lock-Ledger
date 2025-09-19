@@ -156,6 +156,21 @@
    flex-direction: row !important;   
 }
 
+.changePassBtn{
+   padding: 5px 15px;
+   font-size: 1.1rem;
+   background-color: #00686b; 
+   border: none;
+   border-radius: 6px;
+   cursor: pointer;
+   transition: background-color 0.2s ease, transform 0.15s ease; 
+   color: white;
+}
+
+.changePassBtn:hover{
+   background-color: #009499; 
+}
+
 .settings
 {
    border-top: 1px solid cyan;
@@ -181,6 +196,15 @@
    background-color: #003146;
 }
 
+.errorMsg{
+   margin-bottom: 10px;
+   text-align: center;
+   color: rgb(255, 70, 64);
+}
+
+.invalid{
+   border: 1px solid rgb(255, 70, 64) !important;
+}
 
 @media (max-width: 768px){
    .profileContainer{

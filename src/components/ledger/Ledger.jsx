@@ -14,8 +14,8 @@ export default function({search ,page, isDeleting, setIsDeleting, currentUser})
    useEffect(() => {
       async function loadLedgerData()
       {
-         const userLedger = await fetchLedger(currentUser[0].id);
-         setTransactions(userLedger);
+         const userLedger = await fetchLedger(currentUser.id);
+         userLedger ? setTransactions(userLedger.sort((a, b) => b.date.localeCompare(a.date))) : setTransactions([]);
       }
 
       loadLedgerData();
@@ -29,12 +29,11 @@ export default function({search ,page, isDeleting, setIsDeleting, currentUser})
 
    async function handleAddTransaction(date, title, type, amount)
    {
-      const newTransaction = await addTransaction(currentUser[0].id, date, title, type, amount);
-      setTransactions(prevActions => [newTransaction, ...prevActions])
+      const newTransaction = await addTransaction(currentUser.id, date, title, type, amount);
+      setTransactions(prevActions => [newTransaction, ...prevActions].sort((a, b) => b.date.localeCompare(a.date)))
       setAddingTransaction(false);
       setIsEditing(false);
-      setTransaction("");
-      console.log(transactions)
+      setTransactionToEdit("");
    }
 
    async function editTransaction(date, title, type, amount)
@@ -46,7 +45,7 @@ export default function({search ,page, isDeleting, setIsDeleting, currentUser})
       );
       setAddingTransaction(false)
       setIsEditing(false)
-      setTransaction("");
+      setTransactionToEdit("");
       console.log(transactionToEdit);
    }
 

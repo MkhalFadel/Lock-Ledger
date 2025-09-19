@@ -5,15 +5,16 @@ import profileIcon from '../../assets/icons/profileIcon.png';
 import EditIcon from '../../assets/icons/EditIcon.png'
 import saveIcon from '../../assets/icons/saveIcon.png'
 import xIcon from '../../assets/icons/xIcon.png'
-import showIcon from '../../assets/icons/showIcon.png'
-import hideIcon from '../../assets/icons/hideIcon.png'
 import { updateInfo } from '../../API/users';
 import { removeLocalStorage } from '../../utils/localStorage';
+import { updateLocalStorage } from '../../utils/localStorage';
+import FormBox from '../formBox/FormBox';
+import { validateForm } from '../../utils/validationMessages';
 
-export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
+export default function ProfileInfo({isOpen, currentUser, setCurrentUser, page})
 {
    useEffect(() => {
-      document.title = "LockLedger - Profile"
+      document.title = "LockLedger - Profile"   
 
    }, [])
 
@@ -21,38 +22,50 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
 
    //const [isEditingImg, setIsEditingImg] = useState(false);
 
-   const [name, setName] = useState(currentUser[0].username);
-   const [email, setEmail] = useState(currentUser[0].email);
-   const [password, setPassword] = useState(currentUser[0].password);
+   const [name, setName] = useState(currentUser.username);
+   const [email, setEmail] = useState(currentUser.email);
 
    const nameRef = useRef(null);
    const emailRef = useRef(null);
-   const passwordRef = useRef(null);
 
    const [isEditingName , setIsEditingName] = useState(false);
    const [isEditingEmail, setIsEditingEmail] = useState(false);
-   const [isEditingPassword, setIsEditingPassword] = useState(false);
 
    const [infoEdited, setInfoEdited] = useState("");
-   const [isShowing, setIsShowing] = useState(false);
+   const [isChangingPassword, setIsChangingPassword] = useState(false);
+
+   const [errors, setErrors] = useState({});
+
+   useEffect(() => {
+      const timer = setTimeout(() => {
+         setErrors({});
+      }, 3000)
+
+      return () => clearTimeout(timer); 
+   }, [errors])
 
 
    async function handleInfoChange(newInfo, type)
    {
-      await updateInfo(currentUser[0].id, newInfo)
+      const validationErrors = validateForm({email, name});
+      if(Object.keys(validationErrors).length > 0)
+      {
+         setErrors(validationErrors);
+         return;
+      }
+
+      await updateInfo(currentUser.id, newInfo)
       if(type === 'username')
       {
-         setCurrentUser(prevInfo => [{...prevInfo[0], username: name}])
+         setCurrentUser(prevInfo => ({...prevInfo, username: name}))
+         updateLocalStorage("currentUser", {username: name})
          setIsEditingName(false)
       }
       else if(type === 'email')
       {
-         setCurrentUser(prevInfo => [{...prevInfo[0], email: email}])
+         setCurrentUser(prevInfo => ({...prevInfo, email: email}))
+         updateLocalStorage("currentUser", {email: email})
          setIsEditingEmail(false);
-      }
-      else{
-         setCurrentUser(prevInfo => [{...prevInfo[0], password: password}])
-         setIsEditingPassword(false)
       }
    }
 
@@ -61,12 +74,6 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
       setCurrentUser(0);
       removeLocalStorage("currentUser");
       navigate('/Lock-Ledger/login');
-   }
-
-   function showPassword(e)
-   {
-      e.preventDefault();
-      setIsShowing(prev => !prev)
    }
 
    useEffect(() => {
@@ -79,16 +86,9 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
    {
       const input = emailRef.current;
       input.focus();
-      input.setSelectionRange(input.value.length, input.value.length);
-   }
-   else{
-      const input = passwordRef.current;
-      input.focus();
-      input.setSelectionRange(input.value.length, input.value.length);
    }
 
-
-}, [isEditingName, isEditingEmail, isEditingPassword]);
+}, [isEditingName, isEditingEmail]);
 
 
 
@@ -109,7 +109,7 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
                   <div className={styles.userInfo}>
                      <label htmlFor="UserName">Username</label>
                      <div className={styles.editInfo}>
-                        <input id='UserName' ref={nameRef} type="text" value={name} onChange={e => setName(e.target.value)} disabled={!isEditingName} />
+                        <input id='UserName' placeholder='Username' className={errors.name && styles.invalid} ref={nameRef} type="text" value={name} onChange={e => setName(e.target.value)} disabled={!isEditingName} />
                         <button onClick={() => {setIsEditingName(true); setInfoEdited(name)}}>
                            {!isEditingName && <img src={EditIcon} alt="editBtn" loading='lazy' />}
                         </button>
@@ -122,12 +122,13 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
                               </button>
                            </div>}
                      </div>
+                     {errors.name && <p className={styles.errorMsg}>*{errors.name}*</p>}
                   </div>
 
                   <div className={styles.userInfo}>
                      <label htmlFor="email">Email</label>
                      <div className={styles.editInfo}>
-                        <input id='email' ref={emailRef} type="email" value={email} onChange={e => setEmail(e.target.value)} disabled={!isEditingEmail} />
+                        <input id='email' placeholder='example@gmail.com' className={errors.email && styles.invalid} ref={emailRef} type="email" value={email} onChange={e => setEmail(e.target.value)} disabled={!isEditingEmail} />
                         <button onClick={() => {setIsEditingEmail(true); setInfoEdited(email)}}>
                            {!isEditingEmail && <img src={EditIcon} alt="editBtn" loading='lazy' />}
                         </button>
@@ -140,35 +141,18 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser})
                               </button>
                            </div>}
                      </div>
+                     {errors.email && <p className={styles.errorMsg}>*{errors.email}*</p>}
                   </div>
 
-                  <div className={styles.userInfo}>
-                     <label htmlFor="password">Password</label>
-                     <div className={styles.editInfo}>
-                        <div>
-                           {!isShowing && <input id='password' style={{marginLeft: "-5px"}} ref={passwordRef} type="password" value={password} onChange={e => setPassword(e.target.value)} disabled={!isEditingPassword} />}
-                           {isShowing && <input id='password' ref={passwordRef} type="text" value={password} onChange={e => setPassword(e.target.value)} disabled={!isEditingPassword} />}
-                           <button onClick={e => showPassword(e)} className={styles.showBtn}>
-                              {!isShowing && <img src={showIcon} alt="showIcon" />}
-                              {isShowing && <img src={hideIcon} alt="showIcon" />}
-                           </button>
-                        </div>
-                        <button onClick={() => {setIsEditingPassword(true); setInfoEdited(password)}}>
-                           {!isEditingPassword && <img src={EditIcon} alt="editBtn" loading='lazy' />}
-                        </button>
-                        {isEditingPassword && <div className={styles.changesBtns}>
-                              <button onClick={() => handleInfoChange({password: password}, "password")}>
-                                 <img src={saveIcon} alt="editBtn" loading='lazy' />  
-                              </button>
-                              <button onClick={() => {setIsEditingPassword(false); setPassword(infoEdited)}}>
-                                 <img src={xIcon} alt="discardBtn" loading='lazy' />
-                              </button>
-                           </div>}
-                     </div>
-                  </div>
+                  {<div className={styles.userInfo}>
+                     <label style={{marginBottom: "5px"}} htmlFor="password">Password</label>
+                     <button onClick={() => setIsChangingPassword(true)} className={styles.changePassBtn}>Change Password</button>
+                  </div>}
 
                </div>
             </div>
+
+            {isChangingPassword && <FormBox isChangingPassword={isChangingPassword} currentUser={currentUser} setCurrentUser={setCurrentUser} setIsChangingPassword={setIsChangingPassword}page={page} />}
 
             <div className={styles.settings}>
                <div>Notifications</div>

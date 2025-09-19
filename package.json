@@ -13,6 +13,7 @@
     "deploy": "npm run build && npm run copy404 && npx gh-pages -d dist -b gh-pages"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "nanoid": "^5.1.5",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",

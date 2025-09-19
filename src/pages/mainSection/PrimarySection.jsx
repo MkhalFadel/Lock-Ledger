@@ -30,7 +30,7 @@ export default function NotesPage({currentUser, setCurrentUser})
          <SideBar isMobile={isMobile} setIsMobile={setIsMobile} currentUser={currentUser} setInNote={setInNote} view={view} setView={setView} isOpen ={isOpen} setIsOpen={setIsOpen} changePage={changePage} page={page} />
          {page === "notes" && <NotesSection currentUser={currentUser} inNote={inNote} setInNote={setInNote} view={view} search={search} isOpen={isOpen} page={page} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />}
          {page === "ledger" && <Ledger currentUser={currentUser} search={search} page={page} isDeleting={isDeleting} setIsDeleting={setIsDeleting} />}
-         {page === "profile" && <ProfileInfo isOpen={isOpen} currentUser={currentUser} setCurrentUser={setCurrentUser} />}
+         {page === "profile" && <ProfileInfo isOpen={isOpen} currentUser={currentUser} setCurrentUser={setCurrentUser} page={page}/>}
       </div>
    )
 }
