@@ -54,7 +54,7 @@ export default function Signup({currentUser, setCurrentUser})
             console.log([newUser])
             setCurrentUser(newUser)
 
-            if(newUser) navigate("/Lock-Ledger/");
+            if(newUser) navigate("/Lock-Ledger/Pin");
             setLocalStorage("currentUser", newUser)
          
          }

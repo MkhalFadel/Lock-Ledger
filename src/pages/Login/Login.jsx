@@ -47,7 +47,7 @@ export default function Login({currentUser, setCurrentUser})
       {
          setCurrentUser(userInfo[0])
          setLocalStorage("currentUser", userInfo[0]);
-         navigate("/Lock-Ledger/"); 
+         navigate("/Lock-Ledger/Pin"); 
       }
       else
          setErrors({login: "Invalid Email or Password"}) 
