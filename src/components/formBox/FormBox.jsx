@@ -1,7 +1,7 @@
 import styles from "./formBox.module.css";
 import { useState, useEffect, useRef } from "react";
-import showIcon from '../../assets/icons/showIcon.png'
-import hideIcon from '../../assets/icons/hideIcon.png'
+import showIcon from '../../assets/icons/showIcon.webp'
+import hideIcon from '../../assets/icons/hideIcon.webp'
 import { validateForm, validatePasswordChanges } from "../../utils/validationMessages";
 import { updateLocalStorage } from "../../utils/localStorage";
 import { updateInfo } from "../../API/users";
@@ -145,18 +145,18 @@ export default function FormBox({page,
                )}
 
                {/* appears when a new transaction is being added */}
-            {page === "ledger" && !isDeleting && (<div style={{width: 755}}> 
+            {page === "ledger" && !isDeleting && (<div className={styles.ledgerForm}>
                <h4>Update Ledger</h4>
                <input onChange={e => setDate(e.target.value)} value={date} type="date" />
-               <input onChange={e => setTitle(e.target.value)} ref={titleRef} placeholder="Add Title" value={title} type="text" className={errors.title ? styles.invalid : ""} />
+               <input onChange={e => setTitle(e.target.value)} ref={titleRef} placeholder="Add Title" value={title} type="text" className={errors.title && styles.invalid} />
                {errors.title && <p className={styles.errorMsg}>*{errors.title}*</p>}
-               <select value={type} onChange={e => setType(e.target.value)} className={`${styles.typeBox} ${errors.type ? styles.invalid : ""}`} name="type" id="type" >
+               <select value={type} onChange={e => setType(e.target.value)} className={`${styles.typeBox} ${errors.type && styles.invalid}`} name="type" id="type" >
                   <option value="" disabled>Select Type</option>
                   <option value="Income">Income</option>
                   <option value="Expenses">Expenses</option>
                </select>
                {errors.type && <p className={styles.errorMsg}>*{errors.type}*</p>}
-               <input value={amount} onChange={e => setAmount(e.target.value)} type="number" placeholder="$0.00" className={errors.amount ? styles.invalid : ""} />
+               <input value={amount} onChange={e => setAmount(e.target.value)} type="number" placeholder="$0.00" className={errors.amount && styles.invalid} />
                {errors.amount && <p className={styles.errorMsg}>*{errors.amount}*</p>}
                <div className={styles.btns}>
                   <button onClick={handleAdding} className={`${styles.formBtn} ${styles.addBtn}`}>Update</button>

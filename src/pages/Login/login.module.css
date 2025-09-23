@@ -146,7 +146,11 @@ form{
    }
 
    .email, .password{
-      width: 95%;
+      width: 90%;
+   }
+
+   .showBtn{
+      right: 18px;
    }
 
    .loginBtn{

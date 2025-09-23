@@ -155,7 +155,11 @@ form{
    }
 
    .email, .password, .username, .pin{
-      width: 95%;
+      width: 90%;
+   }
+
+   .showBtn{
+      right: 15px;
    }
 
    .loginBtn{

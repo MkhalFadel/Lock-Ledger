@@ -20,7 +20,7 @@
    border-radius: 7px;
    display: flex;
    flex-direction: column;
-   align-items: center;
+   align-items: stretch;
    justify-content: center;
 }
 
@@ -110,12 +110,17 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .errorMsg{
    margin-bottom: 10px;
-   text-align: center;
    color: rgb(255, 70, 64);
+   text-align: center;
+   width: 100% ;
 }
 
 .invalid{
    border: 1px solid rgb(255, 70, 64) !important;
+}
+
+.ledgerForm{
+   width: 755px;
 }
 
 @media (max-width: 768px){
@@ -129,5 +134,9 @@ input[type="number"]::-webkit-inner-spin-button {
 
    .formBtn{
       font-size: 1rem;
+   }
+
+   .ledgerForm{
+      width: 258px;
    }
 }

@@ -1,7 +1,7 @@
 import styles from './sideBar.module.css'
-import xIcon from '../../assets/icons/xIcon.png';
-import logo from '../../assets/lockLedgerLogo.png';
-import profileIcon from '../../assets/icons/profileIcon.png';
+import xIcon from '../../assets/icons/xIcon.webp';
+import logo from '../../assets/lockLedgerLogo.webp';
+import profileIcon from '../../assets/icons/profileIcon.webp';
 import { useEffect, useState } from 'react';
 
 

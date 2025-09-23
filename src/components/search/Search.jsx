@@ -1,5 +1,5 @@
 import styles from './search.module.css'
-import humMenu from '../../assets/icons/humMenu.png'
+import humMenu from '../../assets/icons/humMenu.webp'
 import { useEffect } from 'react'
 
 export default function Search({isMobile, search, setSearch, isOpen, setIsOpen})

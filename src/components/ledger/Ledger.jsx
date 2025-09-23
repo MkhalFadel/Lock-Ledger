@@ -1,11 +1,13 @@
 import styles from "./ledger.module.css"
 import { useEffect, useState } from "react"
 import FormBox from "../formBox/FormBox"
-import EditIcon from '../../assets/icons/EditIcon.png'
-import Trash from '../../assets/icons/Trash.png'
+import EditIcon from '../../assets/icons/EditIcon.webp'
+import Trash from '../../assets/icons/Trash.webp'
+import noTransactions from '../../assets/icons/noTransaction.webp'
 import { addTransaction, fetchLedger, editLedger, deleteLedger } from "../../API/ledger"
+import { OrbitProgress } from "react-loading-indicators"
 
-export default function({search ,page, isDeleting, setIsDeleting, currentUser})
+export default function({search ,page, isDeleting, setIsDeleting, currentUser, isOpen})
 {
    useEffect(() => {
       document.title = "LockLedger - Ledger"
@@ -14,8 +16,18 @@ export default function({search ,page, isDeleting, setIsDeleting, currentUser})
    useEffect(() => {
       async function loadLedgerData()
       {
-         const userLedger = await fetchLedger(currentUser.id);
-         userLedger ? setTransactions(userLedger.sort((a, b) => b.date.localeCompare(a.date))) : setTransactions([]);
+         try
+         {
+            const userLedger = await fetchLedger(currentUser.id);
+            userLedger ? setTransactions(userLedger.sort((a, b) => b.date.localeCompare(a.date))) : setTransactions([]);
+         }
+         catch(err)
+         {
+            console.log(err);
+         }
+         finally{
+            setLoading(false);
+         }
       }
 
       loadLedgerData();
@@ -26,6 +38,7 @@ export default function({search ,page, isDeleting, setIsDeleting, currentUser})
    const [transactionToEdit, setTransactionToEdit] = useState(""); // storing a transaction temporarly to edit
    const [isEditing, setIsEditing] = useState(false); // checking if a transaction is being edited or added
    const [transactionToDelete, setTransactionToDelete] = useState(null);
+   const [loading, setLoading] = useState(true);
 
    async function handleAddTransaction(date, title, type, amount)
    {
@@ -124,6 +137,12 @@ export default function({search ,page, isDeleting, setIsDeleting, currentUser})
             </table>
          </div>
 
+            {loading && <div className={styles.loading}>
+               <OrbitProgress color="cyan" size="large" text="" textColor="" />  
+            </div>}
+
+            {!loading && !transactions.length  && (<img src={noTransactions} className={`${styles.noTransactionsImg} ${!isOpen && styles.notOpen}`} alt="No Current Transactions" />)}
+      
       </section>
    )
 }

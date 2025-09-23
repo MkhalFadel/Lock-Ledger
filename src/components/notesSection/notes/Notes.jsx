@@ -2,10 +2,10 @@ import styles from "./notes.module.css"
 import FormBox from "../../formBox/FormBox";
 import { useState, useEffect, useRef } from "react"
 import { DAYS, MONTHS, formatTime } from "../../../utils/utility";
-import EditIcon from '../../../assets/icons/EditIcon.png'
-import saveIcon from '../../../assets/icons/saveIcon.png'
-import Trash from '../../../assets/icons/Trash.png'
-import xIcon from '../../../assets/icons/xIcon.png'
+import EditIcon from '../../../assets/icons/EditIcon.webp'
+import saveIcon from '../../../assets/icons/saveIcon.webp'
+import Trash from '../../../assets/icons/Trash.webp'
+import xIcon from '../../../assets/icons/xIcon.webp'
 import { updateNote, updateNotesContent } from "../../../API/notes";
 
 export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes, isDeleting, setIsDeleting, view})
@@ -114,6 +114,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
          
          {isEditing && <textarea 
             ref={textareaRef}
+            value={isEditing ? editedText : text}
             onChange={(event) => setEditedText(event.target.value)} 
             className={`${styles.textEdit} ${!isOpen ? styles.sideBarClose : ""}`} 
             name="notesContent" id="0">

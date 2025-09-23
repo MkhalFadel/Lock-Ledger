@@ -1,10 +1,10 @@
 import styles from './profile.module.css'
 import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
-import profileIcon from '../../assets/icons/profileIcon.png';
-import EditIcon from '../../assets/icons/EditIcon.png'
-import saveIcon from '../../assets/icons/saveIcon.png'
-import xIcon from '../../assets/icons/xIcon.png'
+import profileIcon from '../../assets/icons/profileIcon.webp';
+import EditIcon from '../../assets/icons/EditIcon.webp'
+import saveIcon from '../../assets/icons/saveIcon.webp'
+import xIcon from '../../assets/icons/xIcon.webp'
 import { updateInfo } from '../../API/users';
 import { removeLocalStorage } from '../../utils/localStorage';
 import { updateLocalStorage } from '../../utils/localStorage';

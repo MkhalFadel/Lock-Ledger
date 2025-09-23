@@ -2,11 +2,12 @@ import styles from './notesSection.module.css';
 import { useEffect, useState } from 'react';
 import Notes from './notes/Notes';
 import FormBox from '../formBox/FormBox';
-import emptyStarIcon from '../../assets/icons/emptyStarIcon.png'
-import starIcon from '../../assets/icons/starIcon.png'
-import restoreIcon from '../../assets/icons/restoreIcon.png'
-import notesNotFound from '../../assets/icons/noNotesFound.png';
-import { createNote, fetchNotes, updateNote, deleteAll } from '../../API/notes';   
+import emptyStarIcon from '../../assets/icons/emptyStarIcon.webp'
+import starIcon from '../../assets/icons/starIcon.webp'
+import restoreIcon from '../../assets/icons/restoreIcon.webp'
+import notesNotFound from '../../assets/icons/noNotesFound.webp';
+import { createNote, fetchNotes, updateNote, deleteAll } from '../../API/notes'; 
+import { OrbitProgress } from 'react-loading-indicators';  
 
 export default function NotesSection({inNote, setInNote, view, search, isOpen, page, isDeleting, setIsDeleting, currentUser})
 {
@@ -17,17 +18,27 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
    const [notes, setNotes] = useState([]) // store the notes
    const [noteId, setNoteId] = useState(null); // setting the id to open the correct note
    const [addingNote, setAddingNote] = useState(false); // check if a note is being added
-   
-   const notesExist = (notes.length <= 0 || notes.every(n => n.isDeleted)) && view === 'all'
-   const notesFavoriteExist = notes.every(n => !n.isFavorite) && view === 'favorites'
-   const notesDeletedExist = notes.every(n => !n.isDeleted) && view === 'trash';
-      //console.log(noteslength)
+   const [loading, setLoading] = useState(true);
+
+   const notesExist = (notes.length <= 0 || notes.every(n => n.isDeleted)) && view === 'all' && !loading;
+   const notesFavoriteExist = notes.every(n => !n.isFavorite) && view === 'favorites' && !loading || (notes.every(n => n.isDeleted && n.isFavorite) && view === 'favorites');
+   const notesDeletedExist = notes.every(n => !n.isDeleted) && view === 'trash' && !loading;
 
    useEffect(() => {
       async function loadNotes()
       {
-         const userNotes = await fetchNotes(currentUser.id);
-         userNotes ? setNotes(userNotes) : setNotes([]);
+         try
+         {
+            const userNotes = await fetchNotes(currentUser.id);
+            userNotes ? setNotes(userNotes) : setNotes([]);
+         }
+         catch(err)
+         {
+            console.log(err)
+         }
+         finally{
+            setLoading(false)
+         }
       }
 
       loadNotes();
@@ -133,6 +144,10 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
             {displayNotes()}
          </div>}
 
+         {loading && <div className={styles.loading}>
+            <OrbitProgress color="cyan" size="large" text="" textColor="" />  
+         </div>}
+         
          {inNote && <Notes 
                            isOpen={isOpen}
                            setInNote={setInNote}
