@@ -136,14 +136,32 @@ button{
    z-index: -1;
 }
 
-@media (max-width: 768px){
+@media (max-width: 480px){
    .content{
       grid-column: 1 / -1;
+      overflow: hidden;
    }
 
    .noNotesImg{
-      width: 400px;
-      height: 400px;
+      width: 380px;
+      height: 380px;
       top: 180px;
+   }
+}
+
+@media (max-width: 768px){
+   .content{
+      grid-column: 1 / -1;
+      overflow: hidden;
+   }
+
+   .noNotesImg{
+      width: 380px;
+      height: 380px;
+      top: 180px;
+   }
+
+   .head h2{
+      font-size: 2rem;
    }
 }

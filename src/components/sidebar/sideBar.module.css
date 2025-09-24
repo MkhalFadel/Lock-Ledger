@@ -122,7 +122,7 @@
    font-size: 1rem;
 }
 
-@media (max-width: 768px)
+@media (max-width: 480px)
 {
    .sideBar {
       position: fixed;
@@ -143,6 +143,38 @@
       margin: 0 0 10px 10px;
       font-weight: 200;
       font-size: 2.5rem;
+   }
+
+   .notesNav p, .expNav p{
+      font-size: 1.7rem;
+      padding: 7px 10px;
+      margin: 0 15px 10px;
+      width: 100%;
+      max-width: 160px;
+   }
+}
+
+@media (max-width: 768px)
+{
+   .sideBar {
+      position: fixed;
+      top: 0;
+      left: -220px;     /* hidden off-screen by default */
+      width: 220px;
+      height: 100dvh;
+      z-index: 1000;    /* above the page */
+      transition: left 0.3s ease;
+   }
+
+   .SideBar.open {
+      display: flex;
+      left: 0; /* slide in on mobile */
+   }
+
+   .notesNav h3, .expNav h3{
+      margin: 0 0 10px 10px;
+      font-weight: 200;
+      font-size: 3rem;
    }
 
    .notesNav p, .expNav p{

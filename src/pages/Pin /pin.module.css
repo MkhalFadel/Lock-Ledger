@@ -127,7 +127,9 @@ form{
    }
 
    .pin{
-      width: 90%;
+      width: 100%;
+      max-width: 300px;
+      margin-left: 10px;
    }
 
    .unlockBtn{

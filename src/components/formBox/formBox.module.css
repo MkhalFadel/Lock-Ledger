@@ -123,7 +123,7 @@ input[type="number"]::-webkit-inner-spin-button {
    width: 755px;
 }
 
-@media (max-width: 768px){
+@media (max-width: 480px){
    .inputBox{
       width: 60%;
    }
@@ -138,5 +138,45 @@ input[type="number"]::-webkit-inner-spin-button {
 
    .ledgerForm{
       width: 258px;
+   }
+}
+
+@media (max-width: 480px){
+   .container{
+      overflow-y: hidden;
+   }
+
+   .inputBox{
+      width: 60%;
+   }
+
+   .ledgerForm{
+      width: fit-content;
+   }
+
+   .typeBox{
+      width: 106%;
+   }
+}
+
+@media (max-width: 768px){
+   .container{
+      overflow-y: hidden;
+   }
+
+   .inputBox{
+      width: 60%;
+   }
+
+   .ledgerForm{
+      width: fit-content;
+   }
+
+   .typeBox{
+      width: 106%;
+   }
+
+   .formBtn{
+      font-size: 0.9rem;
    }
 }

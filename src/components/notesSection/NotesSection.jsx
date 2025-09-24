@@ -50,12 +50,14 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
       setNoteId(noteId)
    }
    
-   async function addNote(userId, title, content, date)
+   async function addNote(userId, title, content, date, lastEdit)
    {
       setAddingNote(false)
-      const newNote = await createNote(userId, title, content, date)
+      const newNote = await createNote(userId, title, content, date, lastEdit)
       setNotes(prevNotes => [newNote ,...prevNotes]);
    }
+
+   console.log(notes);
 
    function getFilteredNotes()
    {
@@ -123,9 +125,9 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
             <div>
                {view === 'trash' && <button onClick={handleDeleteAll} className={styles.deleteAllBtn}>Delete All</button>}
 
-               {!inNote && <button onClick={() => setAddingNote(true)} className={`${styles.addBtn} ${view !== 'all' ? styles.disable : ''}`} disabled={view !== 'all'}>
+               {!inNote && view !== 'trash' && (<button onClick={() => setAddingNote(true)} className={`${styles.addBtn} ${view !== 'all' ? styles.disable : ''}`} disabled={view !== 'all'}>
                   Add Note +
-               </button>}
+               </button>)}
 
                {inNote && <button onClick={() => setInNote(false) } className={styles.addBtn}>
                   Return to Notes

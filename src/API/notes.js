@@ -12,14 +12,14 @@ export async function fetchNotes(userId)
    }
 }
 
-export async function createNote(userId, title, content, date)
+export async function createNote(userId, title, content, date, lastEdit)
 {
    try
    {
       const res = await fetch(`${API_BASE}/notes`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({userId, title, content, date})
+      body: JSON.stringify({userId, title, content, date, lastEdit})
       }  
       )
    
@@ -34,17 +34,15 @@ export async function createNote(userId, title, content, date)
 export async function updateNote(id, changes)
 {
    try{
-      const res = await fetch(`${API_BASE}/notes/${id}`, {
+      await fetch(`${API_BASE}/notes/${id}`, {
          method: "PUT",
          headers: { "Content-Type": "application/json" },
          body: JSON.stringify(changes),
       })
-      
-      return await res.json(); 
    }
    catch(err)
    {
-      throw new Error("Faild to update Note", err);
+      console.log(err);
    }
 
 }

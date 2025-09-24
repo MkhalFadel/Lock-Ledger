@@ -9,15 +9,16 @@ import xIcon from '../../../assets/icons/xIcon.webp'
 import { updateNote, updateNotesContent } from "../../../API/notes";
 
 export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes, isDeleting, setIsDeleting, view})
-{
-   const [isEditing, setIsEditing] = useState(false)  ;
-   const [text, setText] = useState("");
-   const [editedText,setEditedText] = useState("");
-   const [lastEdit, setLastEdit] = useState("");
 
+{
    // searching for the clicked note via ID
    const note = notes.find(note => note.id === noteId );
    const textareaRef = useRef(null);
+
+   const [isEditing, setIsEditing] = useState(false)  ;
+   const [text, setText] = useState("");
+   const [editedText,setEditedText] = useState("");
+   const [lastEdit, setLastEdit] = useState(note.lastEdit);
 
    // setting the text variable to the notes content if found
    useEffect(() => {
@@ -40,21 +41,24 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
       }
    }, [isEditing])
    
-   function lastEditTime()
+   async function lastEditTime()
    {
-      if(isEditing)
-      {
-         const date = new Date();
-         const month = MONTHS[date.getMonth()];
-         const dayDate = date.getDate();
-         let hour = date.getHours();
-         hour = hour % 12 || 12; 
-         const minutes = date.getMinutes();
-         const amOrPm = hour > 12 ? "AM" : "PM";
-         const dayName = DAYS[date.getDay()];  
-         setLastEdit(`${month} ${dayDate} ${formatTime(hour)}:${formatTime(minutes)} ${amOrPm} `)
-      }
+         if(text !== editedText)
+         {
+            const date = new Date();
+            const month = MONTHS[date.getMonth()];
+            const day = date.getDate();
+            let hour = date.getHours();
+            hour = hour % 12 || 12; 
+            const minutes = date.getMinutes();
+            const amOrPm = hour > 12 ? "AM" : "PM";
+            const lastSavedEdit = `${month} ${day} ${formatTime(hour)}:${formatTime(minutes)} ${amOrPm}`
+            setLastEdit(lastSavedEdit);
+            note.lastEdit = lastSavedEdit;
+            await updateNote(note.id, {lastEdit: lastSavedEdit})
+         }
    }
+   
 
    async function handleDeleteNote()
    {
@@ -70,11 +74,12 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
          setText(editedText || text);
          note.content = editedText ?? text;  
          lastEditTime();   
+         setIsEditing(prev => !prev)
          await updateNotesContent(note.id, (editedText ?? text))
       }else{
          setEditedText(text)
+         setIsEditing(prev => !prev)
       }
-      setIsEditing(prev => !prev)
    }
 
    function discardChanges()

@@ -137,7 +137,7 @@ form{
    border: 1px solid rgb(255, 70, 64);
 }
 
-@media (max-width: 768px){
+@media (max-width: 480px){
    .container{
       width: 90%;
    }
@@ -156,6 +156,42 @@ form{
 
    .email, .password, .username, .pin{
       width: 90%;
+   }
+
+   .showBtn{
+      right: 15px;
+   }
+
+   .loginBtn{
+      width: 90%;
+   }
+}
+
+@media (max-width: 768px){
+   .container{
+      width: 90%;
+   }
+
+   .logo{
+      width: 100px;
+      height: 100px;
+      margin-top: -10px;
+   }
+
+   .container > h1{
+      font-size: 1.5rem;
+      margin-top: -20px;
+      margin-bottom: 5px;
+   }
+
+   label{
+      margin-left: 10px;
+   }
+
+   .email, .password, .username, .pin{
+      width: 100%;
+      margin-left: 10px;
+      max-width: 300px;
    }
 
    .showBtn{
