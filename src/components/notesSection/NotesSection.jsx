@@ -57,8 +57,6 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
       setNotes(prevNotes => [newNote ,...prevNotes]);
    }
 
-   console.log(notes);
-
    function getFilteredNotes()
    {
       if (view === 'all' && notes) return notes.filter(n => (!n.isDeleted))

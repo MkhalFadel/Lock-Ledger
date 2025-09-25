@@ -123,29 +123,29 @@ export default function FormBox({page,
       <div className={styles.container}>
          <div className={styles.inputBox}>
                {/* appears when a new note is being added */}
-            {page === "notes" && !isDeleting &&  (<div>
+            {page === "notes" && !isDeleting &&  (<form onSubmit={e => {e.preventDefault(); handleAdding();}}>
                <h4>Add New Note</h4>
                <input onChange={e => setTitle(e.target.value)} ref={titleRef} placeholder="Add Title" value={title} type="text" className={errors.title ? styles.invalid : ""} />
                {errors.title && <p className={styles.errorMsg}>*{errors.title}*</p>}
                <div className={styles.btns}>
-                  <button onClick={handleAdding} className={`${styles.formBtn} ${styles.addBtn}`}>Add Note</button>
+                  <button type="submit" className={`${styles.formBtn} ${styles.addBtn}`}>Add Note</button>
                   <button onClick={() => setAddingNote(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                </div>
-            </div>)}
+            </form>)}
 
                {/* appears when a note is being Deleted */}
             {page === "notes" && isDeleting && (
-               <div>
+               <form onSubmit={e => {e.preventDefault(); deleteNote();}}>
                   <h4>Delete Note</h4>
                   <div className={styles.btns}>
-                     <button onClick={deleteNote} className={`${styles.formBtn} ${styles.deleteBtn}`}>Confirm Delete</button>
+                     <button type="submit" className={`${styles.formBtn} ${styles.deleteBtn}`}>Confirm Delete</button>
                      <button onClick={() => setIsDeleting(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                   </div>
-               </div>
+               </form>
                )}
 
                {/* appears when a new transaction is being added */}
-            {page === "ledger" && !isDeleting && (<div className={styles.ledgerForm}>
+            {page === "ledger" && !isDeleting && (<form onSubmit={e => {e.preventDefault(); handleAdding();}} className={styles.ledgerForm}>
                <h4>Update Ledger</h4>
                <input onChange={e => setDate(e.target.value)} value={date} type="date" />
                <input onChange={e => setTitle(e.target.value)} ref={titleRef} placeholder="Add Title" value={title} type="text" className={errors.title && styles.invalid} />
@@ -159,31 +159,31 @@ export default function FormBox({page,
                <input value={amount} onChange={e => setAmount(e.target.value)} type="number" placeholder="$0.00" className={errors.amount && styles.invalid} />
                {errors.amount && <p className={styles.errorMsg}>*{errors.amount}*</p>}
                <div className={styles.btns}>
-                  <button onClick={handleAdding} className={`${styles.formBtn} ${styles.addBtn}`}>Update</button>
+                  <button type="submit" className={`${styles.formBtn} ${styles.addBtn}`}>Update</button>
                   <button onClick={() => setAddingTransaction(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                </div>
-            </div>)}
+            </form>)}
 
                {/* appears when a transaction is being Deleted */}
             {page === "ledger" && isDeleting && (
-               <div>
+               <form onSubmit={e => {e.preventDefault(); deleteTransaction();}}>
                   <h4>Delete Transaction</h4>
                   <div className={styles.btns}>
-                     <button onClick={deleteTransaction} className={`${styles.formBtn} ${styles.deleteBtn}`}>Confirm Delete</button>
+                     <button type="submit" className={`${styles.formBtn} ${styles.deleteBtn}`}>Confirm Delete</button>
                      <button onClick={() => {setIsDeleting(false); setAddingTransaction(false)}} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                   </div>
-               </div>
+               </form>
                )}
 
-            {page === "profile" && isChangingPassword && (<div>
+            {page === "profile" && isChangingPassword && (<form onSubmit={e => {e.preventDefault(); handleChangingPassword();} }>
                <h4>Change Password</h4>
                   <div> 
                      <label style={{marginLeft: "5px"}} htmlFor="currentPassword">Current Password</label>
-                     <div className={styles.passowrdContainer}>
+                     <div className={styles.passwordContainer}>
                         {!isShowingCurrent && <input id='currentPassword' className={errors.currentPassword ? styles.invalid : ""} placeholder="Current Password" type="password" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />}
                         {isShowingCurrent && <input id='currentPassword' className={errors.currentPassword ? styles.invalid : ""} placeholder="Current Password" type="text" value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />}
                         {errors.currentPassword && <p className={styles.errorMsg}>*{errors.currentPassword}*</p>}
-                        <button onClick={e => showPassword(e, "current")} className={styles.showBtn}>
+                        <button type="button" onClick={e => showPassword(e, "current")} className={styles.showBtn}>
                            {!isShowingCurrent && <img className={styles.showIcon} src={showIcon} alt="showIcon" />}
                            {isShowingCurrent && <img className={styles.hideIcon} src={hideIcon} alt="showIcon" />}
                         </button>
@@ -192,21 +192,21 @@ export default function FormBox({page,
 
                   <div> 
                      <label style={{marginLeft: "5px"}} htmlFor="newPassword">New Password</label>
-                     <div className={styles.passowrdContainer}>
+                     <div className={styles.passwordContainer}>
                         {!isShowingNew && <input id='newPassword' className={errors.newPassword ? styles.invalid : ""} placeholder="New Password" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} />}
                         {isShowingNew && <input id='newPassword' className={errors.newPassword ? styles.invalid : ""} placeholder="New Password" type="text" value={newPassword} onChange={e => setNewPassword(e.target.value)} />}
                         {errors.newPassword && <p className={styles.errorMsg}>*{errors.newPassword}*</p>}
-                        <button onClick={e => showPassword(e, "new")} className={styles.showBtn}>
+                        <button type="button" onClick={e => showPassword(e, "new")} className={styles.showBtn}>
                            {!isShowingNew && <img className={styles.showIcon} src={showIcon} alt="showIcon" />}
                            {isShowingNew && <img className={styles.hideIcon} src={hideIcon} alt="showIcon" />}
                         </button>
                      </div>
                   </div>
                   <div className={styles.btns}>
-                     <button onClick={() => handleChangingPassword()} className={`${styles.formBtn} ${styles.deleteBtn}`}>Change</button>
+                     <button type="submit" className={`${styles.formBtn} ${styles.deleteBtn}`}>Change</button>
                      <button onClick={() => setIsChangingPassword(false)} className={`${styles.formBtn} ${styles.cancelBtn}`}>Cancel</button>
                   </div>
-            </div>)}
+            </form>)}
          </div>
       </div>
    )

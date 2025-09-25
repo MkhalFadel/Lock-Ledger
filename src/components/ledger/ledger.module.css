@@ -135,7 +135,11 @@
    }
    
    .editBtn{margin-bottom: 15px ;}
-   .noTransactionsImg{top: 170px;}
+   .noTransactionsImg{
+      top: 190px;
+      width: 380px;
+      height: 380px;
+   }
 }
 
 @media (max-width: 768px) {
@@ -148,5 +152,9 @@
    }
    
    .editBtn{margin-bottom: 15px ;}
-   .noTransactionsImg{top: 170px;}
+   .noTransactionsImg{
+      top: 190px;
+      width: 380px;
+      height: 380px;
+   }
 }

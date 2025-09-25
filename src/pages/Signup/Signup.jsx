@@ -114,7 +114,7 @@ export default function Signup({currentUser, setCurrentUser})
 
                <div className={styles.pinContainer}>
                   <label htmlFor="pin">Pin</label>
-                  <input onChange={e => setPin(e.target.value)} placeholder='Pin' id="pin" type="text" className={`${styles.pin} ${errors.pin ? styles.invalid : ""}`} />
+                  <input onChange={e => setPin(e.target.value)} placeholder='Pin' id="pin" type="number" className={`${styles.pin} ${errors.pin ? styles.invalid : ""}`} />
                   {errors.pin && <p className={styles.errorMsg}>*{errors.pin}*</p>}
                </div>
 

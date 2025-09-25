@@ -18,15 +18,16 @@ export default async function createUser(username, email, password, pin)
 {
    try{
 
-      const emailRes = await fetch(`${API_BASE}/users?email=${email}`);
-      let emailData = await emailRes.json();
-      if(typeof emailData === 'string') emailData = [];
+      const results = await fetch(`${API_BASE}/users`);
+      const users = await results.json();
+      if (!Array.isArray(users)) users = []
 
-      const usernameRes = await fetch(`${API_BASE}/users?username=${username}`);
-      let usernameData = await usernameRes.json();
-      if(typeof usernameData === 'string') usernameData = [];
+      console.log(users)
+      
+      const emailTaken = users.some(u => u.email === email)
+      const usernameTaken = users.some(u => u.username === username);
 
-      if(emailData.length > 0 || usernameData.length > 0) return false;
+      if(emailTaken|| usernameTaken) return false;
 
       const salt = bcrypt.genSaltSync(10);
 
