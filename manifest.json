@@ -2,7 +2,7 @@
    "name": "Lock Ledger",
    "short_name": "Ledger",
    "description": "Your secure notes and ledger app",
-   "start_url": "/Lock-Ledger/",
+   "start_url": "./",
    "display": "standalone",
    "background_color": "#003646",
    "theme_color": "#143c5a",
