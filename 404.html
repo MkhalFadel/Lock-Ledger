@@ -52,7 +52,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/Lock-Ledger/assets/index-CWLiHkzk.js"></script>
+    <script type="module" crossorigin src="/Lock-Ledger/assets/index-Didqzv2-.js"></script>
     <link rel="stylesheet" crossorigin href="/Lock-Ledger/assets/index-7GzuYanr.css">
   <link rel="manifest" href="/Lock-Ledger/manifest.webmanifest"></head>
 
@@ -61,12 +61,11 @@
 
     <!-- Register Service Worker -->
     <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker
-            .register("./service-worker.js")
-            .then((reg) => console.log("✅ Service Worker registered:", reg.scope))
-            .catch((err) => console.error("❌ Service Worker registration failed:", err));
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('./service-worker.js')
+            .then(reg => console.log('✅ Service Worker registered:', reg.scope))
+            .catch(err => console.log('❌ SW registration failed:', err));
         });
       }
     </script>
