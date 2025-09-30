@@ -3,10 +3,10 @@
 const CACHE_NAME = "lockledger-cache-v1";
 const ASSETS_TO_CACHE = [
    "./",
-   "/index.html",
-   "/manifest.json",
-   "/icons/manifest-icon-192.maskable.png",
-   "/icons/manifest-icon-512.maskable.png",
+   "./index.html",
+   "./manifest.json",
+   "./icons/manifest-icon-192.maskable.png",
+   "./icons/manifest-icon-512.maskable.png",
 ];
 
 // Install event - cache files
