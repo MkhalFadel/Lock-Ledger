@@ -10,6 +10,7 @@
 
 .searchContainer.open{
    padding: 48px 24px 16px;
+   margin-left: 77px;
 }
 
 .humMenuBtn{
@@ -33,7 +34,10 @@
    max-width: 750px;
    font-size: 1rem;
    outline: none;
-   transition: border-color 0.3s ease;
+   transition: border-color 0.3s ease; 
+}
+
+.installed{
    position: absolute;     /* take it out of normal flow */
    left: 50%;              /* move to middle */
    transform: translateX(-50%);
@@ -43,6 +47,30 @@
    border-color: #00B4D8;
    box-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
 }
+
+.installBtn{
+   border-radius: 7px;
+   border: none;
+   color: #F5F5F5;
+   height: 42px;
+   font-size: 1.1rem;
+   background-color: #0abcc2;
+   padding: 0px 25px;
+   transition: all ease-in-out 0.15s;
+}
+
+.installBtn::before{
+   content: "Install The App";
+}
+
+.installBtn:hover{
+   background-color: #00A0A8;
+}
+
+.installBtn:active{
+   background-color: #00868A;
+}
+
 @media (max-width: 768px){
    .searchContainer{
       grid-column: 1 / -1;
@@ -50,10 +78,19 @@
 
    .searchInput{
       width: 60%;
-      left: 55%;
+      width: 188px;
    }
 
    .humMenuBtn{
       margin-left: -35px;
+   }
+
+   .installBtn{
+      height: 40px;
+      padding: 10px 15px;
+   }
+
+   .installBtn::before{
+      content: "Install App";
    }
 }
