@@ -1,8 +1,8 @@
 const CACHE_NAME = "lockledger-cache-v1";
 const ASSETS_TO_CACHE = [
-   "./manifest.json",
-   "./icons/manifest-icon-192.maskable.png",
-   "./icons/manifest-icon-512.maskable.png",
+   "/Lock-Ledger/manifest.json",
+   "/Lock-Ledger/icons/manifest-icon-192.maskable.png",
+   "/Lock-Ledger/icons/manifest-icon-512.maskable.png",
 ];
 
 self.addEventListener("install", (event) => {
