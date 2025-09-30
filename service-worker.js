@@ -5,30 +5,27 @@ const ASSETS_TO_CACHE = [
    "/Lock-Ledger/icons/manifest-icon-512.maskable.png",
 ];
 
+// Install event
 self.addEventListener("install", (event) => {
-   event.waitUntil(
-      caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
-   );
+event.waitUntil(
+   caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
+);
 });
 
+// Activate event
 self.addEventListener("activate", (event) => {
    event.waitUntil(
       caches.keys().then((keys) =>
       Promise.all(keys.map((key) => key !== CACHE_NAME && caches.delete(key)))
       )
-   );
+);
 });
 
+// Fetch event
 self.addEventListener("fetch", (event) => {
-   const request = event.request;
+   if (event.request.mode === "navigate") return; // always fetch index.html from network
 
-// For navigation requests, always use network
-if (request.mode === "navigate") {
-   return; // Let browser handle index.html normally
-}
-
-  // For other assets, cache-first
 event.respondWith(
-   caches.match(request).then((cachedResponse) => cachedResponse || fetch(request))
+   caches.match(event.request).then((res) => res || fetch(event.request))
 );
 });

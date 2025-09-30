@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <title>LockLedger</title>
+
     <!-- Manifest -->
     <link rel="manifest" href="/Lock-Ledger/manifest.json" />
 
-    <!-- Theme color (browser UI color on mobile) -->
+    <!-- Theme color -->
     <meta name="theme-color" content="#143c5a" />
-    <title>LockLedger</title>
 
     <!-- Favicon / PWA icons -->
     <link rel="icon" type="image/png" sizes="192x192" href="/Lock-Ledger/icons/manifest-icon-192.maskable.png" />
@@ -54,20 +55,18 @@
     <script type="module" crossorigin src="/Lock-Ledger/assets/index-CWLiHkzk.js"></script>
     <link rel="stylesheet" crossorigin href="/Lock-Ledger/assets/index-7GzuYanr.css">
   <link rel="manifest" href="/Lock-Ledger/manifest.webmanifest"></head>
+
   <body>
     <div id="root"></div>
+
     <!-- Register Service Worker -->
     <script>
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker
             .register("/Lock-Ledger/service-worker.js")
-            .then((reg) =>
-              console.log("✅ Service Worker registered:", reg.scope)
-            )
-            .catch((err) =>
-              console.error("❌ Service Worker registration failed:", err)
-            );
+            .then((reg) => console.log("✅ Service Worker registered:", reg.scope))
+            .catch((err) => console.error("❌ Service Worker registration failed:", err));
         });
       }
     </script>
