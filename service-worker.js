@@ -5,12 +5,12 @@ const ASSETS_TO_CACHE = [
    "./icons/manifest-icon-512.maskable.png",
 ];
 
-// Install - cache assets
 self.addEventListener("install", (event) => {
-   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE)));
+   event.waitUntil(
+      caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
+   );
 });
 
-// Activate - clean old caches
 self.addEventListener("activate", (event) => {
    event.waitUntil(
       caches.keys().then((keys) =>
@@ -19,14 +19,12 @@ self.addEventListener("activate", (event) => {
    );
 });
 
-// Fetch - cache static assets, network-first for HTML
 self.addEventListener("fetch", (event) => {
    const request = event.request;
 
-  // Always fetch HTML from network
+// For navigation requests, always use network
 if (request.mode === "navigate") {
-   event.respondWith(fetch(request).catch(() => caches.match("./index.html")));
-   return;
+   return; // Let browser handle index.html normally
 }
 
   // For other assets, cache-first
