@@ -3,15 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <!-- Theme color (browser UI color on mobile) -->
+    <meta name="theme-color" content="#143c5a" />
     <title>LockLedger</title>
-    <link rel="icon" type="image/png" href="/Lock-Ledger/assets/LockLedger-Icon-l-9cyrD1.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <script type="module" crossorigin src="/Lock-Ledger/assets/index-Bry6xHtq.js"></script>
-    <link rel="stylesheet" crossorigin href="/Lock-Ledger/assets/index-BBwvpyqk.css">
-  </head>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/icons/icon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="72x72" href="/icons/icon-72x72.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/icons/icon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="128x128" href="/icons/icon-128x128.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
+    <link rel="icon" type="image/png" sizes="256x256" href="/icons/icon-256x256.png" />
+    <link rel="icon" type="image/png" sizes="384x384" href="/icons/icon-384x384.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png" />
+
+    <!-- Apple PWA support -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-icon-180.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-icon-152.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-icon-120.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-icon-76.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="LockLedger" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="/assets/index-BBPAJg_b.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-7GzuYanr.css">
+  <link rel="manifest" href="/manifest.webmanifest"></head>
   <body>
     <div id="root"></div>
+    <!-- Register Service Worker -->
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((reg) =>
+              console.log("✅ Service Worker registered:", reg.scope)
+            )
+            .catch((err) =>
+              console.error("❌ Service Worker registration failed:", err)
+            );
+        });
+      }
+    </script>
   </body>
 </html>
