@@ -15,7 +15,6 @@ self.addEventListener("install", (event) => {
       return cache.addAll(ASSETS_TO_CACHE);
       })
    );
-   self.skipWaiting();
 });
 
 // Activate event - clean old caches
@@ -31,7 +30,6 @@ self.addEventListener("activate", (event) => {
       )
       )
    );
-   self.clients.claim();
 });
 
 // Fetch event - serve from cache first, then network
