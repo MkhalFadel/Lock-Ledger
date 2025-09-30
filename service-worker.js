@@ -5,21 +5,8 @@ const ASSETS_TO_CACHE = [
    "/Lock-Ledger/icons/manifest-icon-512.maskable.png",
 ];
 
-// Install event
-self.addEventListener("install", (event) => {
-event.waitUntil(
-   caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS_TO_CACHE))
-);
-});
-
-// Activate event
-self.addEventListener("activate", (event) => {
-   event.waitUntil(
-      caches.keys().then((keys) =>
-      Promise.all(keys.map((key) => key !== CACHE_NAME && caches.delete(key)))
-      )
-);
-});
+self.addEventListener('install', (event) => self.skipWaiting());
+self.addEventListener('activate', (event) => self.clients.claim());
 
 // Fetch event
 self.addEventListener("fetch", (event) => {
