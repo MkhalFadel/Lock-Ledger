@@ -1,0 +1,222 @@
+.content{
+   grid-row: 2 / 3;
+   grid-column: 2 / 3;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   overflow: hidden;
+   padding: 20px 24px;
+   height: 100%;
+}
+
+.head{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   gap: 16px;
+   width: 100%;
+   margin: 0 0 16px 0; 
+}
+
+h2{
+   font-size: 2.5rem;
+}
+
+.optionsContainer{
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   max-width: 450px;
+   column-gap: 15px;
+   margin-bottom: 15px;
+}
+
+.options{
+   background-color: #143c5a;
+   border: 1px solid #003C4D;
+   color: #ffffff;
+   padding: 0.75rem;
+   border-radius: 6px;
+   font-size: 1rem;
+   outline: none;
+   transition: border-color 0.3s ease;
+   width: 100%;
+   max-width: 150px;
+}
+
+.report{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   width: 100%;
+}
+
+.income{
+   background-color: #038d6a;
+}
+
+.expenses{
+   background-color: #c41818;
+}
+
+.remaining{
+   background-color: #143c5a;
+}
+
+.income, .expenses, .remaining{
+   width: 100%;
+   max-width: 280px;
+   padding: 30px 20px;
+   border-radius: 7px;
+}
+
+.income p, .expenses p, .remaining p{
+   font-size: 1.5rem;
+   margin-bottom: 15px;
+}
+
+.income h4, .expenses h4, .remaining h4{
+   font-size: 2rem;
+}
+
+.chartReport{
+   margin-top: 45px;
+   margin-bottom: 25px;
+   height: 100%;
+   max-height: 350px;
+   width: 99%;
+   background-color: #003C4D;
+   border-radius: 7px;
+   padding: 5px;
+}
+
+.tableContainer {
+   width: 100%;
+   overflow-x: auto;
+   margin-top: 25px;
+}
+
+/* Table base */
+.table {
+   width: 100%;
+   border-collapse: separate;   /* allows rounded corners */
+   border-spacing: 0;
+   background: rgba(255, 255, 255, 0.03); 
+   color: #F5F5F5;                              
+   border: 1px solid #003C4D;                   
+   border-radius: 8px;
+   overflow: hidden;                            /* clip rounded corners */
+   font-size: 0.95rem;
+   text-align: center;
+}
+
+/* Header */
+.table thead th {
+   background:  #004E62; /* matches your panels */
+   color: #EAF6FB;
+   padding: 12px 14px;
+   font-weight: 600;
+   font-size: 1.4rem;
+   letter-spacing: 0.02em;
+   text-align: left;
+   border-bottom: 1px solid #003C4D;
+   white-space: nowrap;
+   text-align: center;
+}
+
+/* Cells */
+.table tbody td {
+   padding: 12px 14px;
+   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+   vertical-align: middle;
+   font-size: 1.1rem;
+}
+
+/* Stripe + hover using teal accent */
+.table tbody tr:nth-child(even) {
+   background: rgba(255, 255, 255, 0.02);
+}
+
+.table tbody tr:hover {
+   background: rgba(0, 196, 204, 0.12); /* #00C4CC with opacity */
+}
+
+/* Rounded top corners on header cells */
+.table thead th:first-child { border-top-left-radius: 8px; }
+.table thead th:last-child  { border-top-right-radius: 8px; }
+
+@media (max-width: 480px){
+   .content{
+      grid-column: 1 / -1;
+   }
+
+   .table { font-size: 0.9rem; }
+   .table thead th, .table tbody td { padding: 10px 12px; }
+   .chartReport{width: 92%;}
+   .head{
+      flex-direction: column;
+      gap: 10px;
+   }
+   h2{font-size: 2rem;}
+   .optionsContainer{
+      column-gap: 10px;
+   }
+   .options{max-width: 120px;}
+   .report{
+      width: 100%;
+      justify-content: space-between;
+   }
+   .income, .expenses, .remaining{
+      width: 100%;
+      height: 79px;
+      max-width: 100px;
+      padding: 20px 5px;
+      border-radius: 7px;
+   }
+   .income p, .expenses p, .remaining p{
+      font-size: 1rem;
+   }
+   .income h4, .expenses h4, .remaining h4{
+      font-size: 1.5rem;
+   }
+   .income p{
+      margin-bottom: 34px;
+   }
+}
+
+@media (max-width: 768px) {
+   .content{
+      grid-column: 1 / -1;
+   }
+
+   .table { font-size: 0.9rem; }
+   .table thead th, .table tbody td { padding: 10px 12px; }
+   .chartReport{width: 92%;}
+   .head{
+      flex-direction: column;
+      gap: 10px;
+   }
+   h2{font-size: 2rem;}
+   .optionsContainer{
+      column-gap: 10px;
+   }
+   .options{max-width: 120px;}
+   .report{
+      width: 100%;
+      justify-content: space-between;
+   }
+   .income, .expenses, .remaining{
+      width: 100%;
+      height: 79px;
+      max-width: 100px;
+      padding: 20px 5px;
+      border-radius: 7px;
+   }
+   .income p, .expenses p, .remaining p{
+      font-size: 1rem;
+   }
+   .income h4, .expenses h4, .remaining h4{
+      font-size: 1.5rem;
+   }
+}

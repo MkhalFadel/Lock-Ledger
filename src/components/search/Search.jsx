@@ -18,8 +18,8 @@ export default function Search({isMobile, search, setSearch, isOpen, setIsOpen})
          {!isOpen && <button onClick={() => {setIsOpen(true)}} className={styles.humMenuBtn}>
             <img className={styles.humMenu} src={humMenu} alt="Menu" loading='lazy' />
          </button>}
-         <input value={search} type="search" onChange={e => setSearch(e.target.value)} className={`${styles.searchInput} ${!canInstall ? styles.installed : ""}`} placeholder='Search...' />
-         {canInstall && <button onClick={triggerPWAInstall} className={styles.installBtn}></button>}
+         <input value={search} type="search" onChange={e => setSearch(e.target.value)} className={styles.searchInput}  placeholder='Search...' />
+         <button onClick={triggerPWAInstall} className={styles.installBtn}>Install App</button>
       </div>
    )
 }

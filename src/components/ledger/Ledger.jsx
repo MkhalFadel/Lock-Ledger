@@ -7,7 +7,7 @@ import noTransactions from '../../assets/icons/noTransaction.webp'
 import { addTransaction, fetchLedger, editLedger, deleteLedger } from "../../API/ledger"
 import { OrbitProgress } from "react-loading-indicators"
 
-export default function({search ,page, isDeleting, setIsDeleting, currentUser, isOpen})
+export default function({transactions, setTransactions, search ,page, isDeleting, setIsDeleting, currentUser, isOpen})
 {
    useEffect(() => {
       document.title = "LockLedger - Ledger"
@@ -33,7 +33,6 @@ export default function({search ,page, isDeleting, setIsDeleting, currentUser, i
       loadLedgerData();
    }, [])
 
-   const [transactions, setTransactions] = useState([]); // storing all the transactions
    const [addingTransaction, setAddingTransaction] = useState(false); // checking if a new transaction is being added
    const [transactionToEdit, setTransactionToEdit] = useState(""); // storing a transaction temporarly to edit
    const [isEditing, setIsEditing] = useState(false); // checking if a transaction is being edited or added

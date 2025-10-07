@@ -35,7 +35,7 @@ export default function SideBar({isMobile, setIsMobile, setInNote, view, setView
             <div className={styles.expNav}>
                <h3>Ledger:</h3>
                <p className={`${page === 'ledger' ? styles.selected : ""}`} onClick={() => {changePage("ledger"); isMobile ? setIsOpen(false) : ""}}>All Entries</p>
-               <p>History</p> 
+               <p className={`${page === 'history' ? styles.selected : ""}`} onClick={() => {changePage("history"); isMobile ? setIsOpen(false) : ""}}>History</p> 
             </div>
             <div onClick={() => {changePage("profile"); isMobile ? setIsOpen(false) : ""}} className={styles.profile}>
                <img className={styles.profilePic} src={profileIcon} alt="profilePic" loading='lazy' />
