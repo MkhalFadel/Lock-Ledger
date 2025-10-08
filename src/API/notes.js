@@ -8,18 +8,18 @@ export async function fetchNotes(userId)
    }
    catch(err)
    {
-      throw new Error("Failed to Fetch Notes", err);
+      console.log(err)
    }
 }
 
-export async function createNote(userId, title, content, date, lastEdit)
+export async function createNote(userId, title, content, date, lastEdit, deletedAt)
 {
    try
    {
       const res = await fetch(`${API_BASE}/notes`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({userId, title, content, date, lastEdit})
+      body: JSON.stringify({userId, title, content, date, lastEdit, deletedAt})
       }  
       )
    
@@ -27,7 +27,7 @@ export async function createNote(userId, title, content, date, lastEdit)
    }
    catch(err)
    {
-      throw new Error("Failed to Create Note", err);
+      console.log(err)
    }
 }
 
@@ -44,7 +44,6 @@ export async function updateNote(id, changes)
    {
       console.log(err);
    }
-
 }
 
 export async function updateNotesContent(id, contentChanges)
@@ -59,7 +58,7 @@ export async function updateNotesContent(id, contentChanges)
    }
    catch(err)
    {
-      throw new Error("Faild to update Note", err);
+      console.log(err)
    }
 
 }
@@ -77,6 +76,17 @@ export async function deleteAll(notes)
    }
    catch(err)
    {
-      throw new Error("Failed to Delete Notes", err);
+      console.log(err)
+   }
+}
+
+export async function cleanupNotes(id)
+{
+   try{
+      await fetch(`${API_BASE}/notes/${id}`, {method: "DELETE"});
+   }
+   catch(err)
+   {
+      console.log(err)
    }
 }
