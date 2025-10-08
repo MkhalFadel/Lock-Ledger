@@ -55,6 +55,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
             const lastSavedEdit = `${month} ${day} ${formatTime(hour)}:${formatTime(minutes)} ${amOrPm}`
             setLastEdit(lastSavedEdit);
             note.lastEdit = lastSavedEdit;
+            console.log(lastSavedEdit);
             await updateNote(note.id, {lastEdit: lastSavedEdit})
          }
    }
@@ -65,7 +66,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
       setNotes(prevNotes => prevNotes.map(n => n.id === note.id ? {...n, isDeleted: true} : n))
       setIsDeleting(false);
       setInNote(false);
-      await updateNote(note.id, {isDeleted: true})
+      await updateNote(note.id, {isDeleted: true, deletedAt: Date.now()})
    }
    
    async function saveChanges()
