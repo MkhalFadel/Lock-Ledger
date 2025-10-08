@@ -6,7 +6,7 @@ import emptyStarIcon from '../../assets/icons/emptyStarIcon.webp'
 import starIcon from '../../assets/icons/starIcon.webp'
 import restoreIcon from '../../assets/icons/restoreIcon.webp'
 import notesNotFound from '../../assets/icons/noNotesFound.webp';
-import { createNote, fetchNotes, updateNote, deleteAll } from '../../API/notes'; 
+import { createNote, fetchNotes, updateNote, deleteAll, cleanupNotes } from '../../API/notes'; 
 import { OrbitProgress } from 'react-loading-indicators';  
 
 export default function NotesSection({inNote, setInNote, view, search, isOpen, page, isDeleting, setIsDeleting, currentUser})
@@ -24,13 +24,17 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
    const notesFavoriteExist = notes.every(n => !n.isFavorite) && view === 'favorites' && !loading || (notes.every(n => n.isDeleted && n.isFavorite) && view === 'favorites');
    const notesDeletedExist = notes.every(n => !n.isDeleted) && view === 'trash' && !loading;
 
+   console.log(notes);
+
    useEffect(() => {
       async function loadNotes()
       {
          try
          {
             const userNotes = await fetchNotes(currentUser.id);
-            userNotes ? setNotes(userNotes) : setNotes([]);
+            const notes = userNotes || [];
+            notes && setNotes(notes.sort((a, b) => b.date.localeCompare(a.date)));
+            cleanupTrash(notes);
          }
          catch(err)
          {
@@ -38,6 +42,20 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
          }
          finally{
             setLoading(false)
+         }
+      }
+
+      async function cleanupTrash(notes)
+      {
+         const now = Date.now();
+         const twoWeeks = 14 * 24 * 60 * 60 * 1000;
+
+         if(!notes) return;
+
+         for (let n of notes)
+         {
+            if(n.isDeleted && n.deletedAt && now - n.deletedAt > twoWeeks) 
+               await cleanupNotes(n.id)   
          }
       }
 
@@ -50,10 +68,10 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
       setNoteId(noteId)
    }
    
-   async function addNote(userId, title, content, date, lastEdit)
+   async function addNote(userId, title, content, date, lastEdit, deletedAt)
    {
       setAddingNote(false)
-      const newNote = await createNote(userId, title, content, date, lastEdit)
+      const newNote = await createNote(userId, title, content, date, lastEdit, deletedAt)
       setNotes(prevNotes => [newNote ,...prevNotes]);
    }
 
