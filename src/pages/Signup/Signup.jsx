@@ -37,31 +37,32 @@ export default function Signup({currentUser, setCurrentUser})
       }
    }, [errors])
 
-      async function signUp()
-      {
-         try
-         {
-            setCurrentUser([]);
+   async function signUp() {
+      try {
+         setCurrentUser([]);
 
-            const newUser = await createUser(username, email, password, pin)
+         // Trim and normalize before sending
+         const formattedUsername = username.trim().toLowerCase();
+         const formattedEmail = email.trim().toLowerCase();
 
-            if(!newUser)
-            {
-               setErrors(prev => ({...prev, signup: "Username/Email Already Taken"}));
-               return;
-            }   
-            
-            console.log([newUser])
-            setCurrentUser(newUser)
+         const newUser = await createUser(formattedUsername, formattedEmail, password, pin);
 
-            if(newUser) navigate("/Lock-Ledger/Pin");
-            setLocalStorage("currentUser", newUser)
-         
+         if (!newUser) {
+            setErrors(prev => ({ ...prev, signup: "Username/Email Already Taken" }));
+            return;
          }
-         catch(err){
-            console.log(err)
-         }
+
+         console.log([newUser]);
+         setCurrentUser(newUser);
+
+         if (newUser) navigate("/Lock-Ledger/Pin");
+
+         setLocalStorage("currentUser", newUser);
+      } 
+      catch (err) {
+         console.error("Sign Up Error:", err);
       }
+   }
 
    function handleValidation()
    {

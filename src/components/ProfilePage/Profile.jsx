@@ -101,9 +101,9 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser, page})
             <div className={styles.accountInfo}>
                <div className={styles.profilePicContainer}>
                   <img src={profileIcon} alt="ProfilePicture" className={styles.profilePic} loading='lazy' />
-                  <button className={`${styles.editPicBtn} ${!isOpen ? styles.sideBarClose : ""}`}>
+                  { /* <button className={`${styles.editPicBtn} ${!isOpen ? styles.sideBarClose : ""}`}>
                      <img src={EditIcon} alt="editBtn" loading='lazy' />
-                  </button>
+                  </button> */}
                </div>
                <div className={styles.info}>
                   <div className={styles.userInfo}>
