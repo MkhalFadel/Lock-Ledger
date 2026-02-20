@@ -8,6 +8,7 @@ import restoreIcon from '../../assets/icons/restoreIcon.webp'
 import notesNotFound from '../../assets/icons/noNotesFound.webp';
 import { createNote, fetchNotes, updateNote, deleteAll, cleanupNotes } from '../../API/notes'; 
 import { OrbitProgress } from 'react-loading-indicators';  
+import { formatDate } from '../../utils/utility';
 
 export default function NotesSection({inNote, setInNote, view, search, isOpen, page, isDeleting, setIsDeleting, currentUser})
 {
@@ -20,9 +21,9 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
    const [addingNote, setAddingNote] = useState(false); // check if a note is being added
    const [loading, setLoading] = useState(true);
 
-   const notesExist = (notes.length <= 0 || notes.every(n => n.isDeleted)) && view === 'all' && !loading;
-   const notesFavoriteExist = notes.every(n => !n.isFavorite) && view === 'favorites' && !loading || (notes.every(n => n.isDeleted && n.isFavorite) && view === 'favorites');
-   const notesDeletedExist = notes.every(n => !n.isDeleted) && view === 'trash' && !loading;
+   const notesExist = (notes.length <= 0 || notes.every(n => n.is_deleted)) && view === 'all' && !loading;
+   const notesFavoriteExist = notes.every(n => !n.is_favorite) && view === 'favorites' && !loading || (notes.every(n => n.is_deleted && n.is_favorite) && view === 'favorites');
+   const notesDeletedExist = notes.every(n => !n.is_deleted) && view === 'trash' && !loading;
 
    console.log(notes);
 
@@ -32,8 +33,9 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
          try
          {
             const userNotes = await fetchNotes(currentUser.id);
+            console.log('USERNOTES:', userNotes)
             const notes = userNotes || [];
-            notes && setNotes(notes.sort((a, b) => b.date.localeCompare(a.date)));
+            notes && setNotes(notes.sort((a, b) => b.created_at.localeCompare(a.created_at)));
             cleanupTrash(notes);
          }
          catch(err)
@@ -54,7 +56,7 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
 
          for (let n of notes)
          {
-            if(n.isDeleted && n.deletedAt && now - n.deletedAt > twoWeeks) 
+            if(n.is_deleted && n.deletedAt && now - n.deletedAt > twoWeeks) 
                await cleanupNotes(n.id)   
          }
       }
@@ -77,29 +79,29 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
 
    function getFilteredNotes()
    {
-      if (view === 'all' && notes) return notes.filter(n => (!n.isDeleted))
-      if (view === 'favorites' && notes) return notes.filter(n => (n.isFavorite && !n.isDeleted))
-      if (view === 'trash' && notes) return notes.filter(n => n.isDeleted)
+      if (view === 'all' && notes) return notes.filter(n => (!n.is_deleted))
+      if (view === 'favorites' && notes) return notes.filter(n => (n.is_favorite && !n.is_deleted))
+      if (view === 'trash' && notes) return notes.filter(n => n.is_deleted)
    }
    
    async function addFavorite(note)
    {
       setNotes(prev => 
-         prev.map(n => n.id === note.id ? {...n, isFavorite: !n.isFavorite} : n)
+         prev.map(n => n.id === note.id ? {...n, is_favorite: !n.is_favorite} : n)
       )
-      await updateNote(note.id, {isFavorite: !note.isFavorite})
+      await updateNote(note.id, {is_favorite: !note.is_favorite})
    }
 
    async function recoverNote(id)
    {
-      setNotes(prevNotes => prevNotes.map(n => n.id === id ? {...n, isDeleted: false} : n))
-      await updateNote(id, {isDeleted: false})
+      setNotes(prevNotes => prevNotes.map(n => n.id === id ? {...n, is_deleted: false} : n))
+      await updateNote(id, {is_deleted: false})
    }
 
    async function handleDeleteAll()
    {
       try{
-         setNotes(prevNotes => prevNotes.filter(n => !n.isDeleted))
+         setNotes(prevNotes => prevNotes.filter(n => !n.is_deleted))
          await deleteAll(notes)
       }catch(err){
          console.error("Failed to delete all notes: ", err)
@@ -120,15 +122,13 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
          <div onClick={() => openNote(note.id)} key={note.id} className={styles.notesContent}>
             <div>
                <h4>{note.title}</h4>
-               <button onClick={e => { e.stopPropagation(); addFavorite(note); }}>
-                  {(!note.isFavorite && view !== 'trash') && (<img src={emptyStarIcon} alt="notFavorite" loading='lazy' />)}
-                  {(note.isFavorite && view !== 'trash') && (<img src={starIcon} alt="Favorite" loading='lazy' />)}
-                  {view === 'trash' && <button className={styles.recoverBtn} onClick={e => {e.stopPropagation(); recoverNote(note.id);}}>
-                     <img src={restoreIcon} alt="restoreBtn" />   
-                  </button>}
+               <button onClick={e => { e.stopPropagation(); view !== 'trash' ? addFavorite(note) : recoverNote(note.id) }}>
+                  {(!note.is_favorite && view !== 'trash') && (<img src={emptyStarIcon} alt="notFavorite" loading='lazy' />)}
+                  {(note.is_favorite && view !== 'trash') && (<img src={starIcon} alt="Favorite" loading='lazy' />)}
+                  {view === 'trash' && <img src={restoreIcon} alt="restoreBtn" />}   
                </button>
             </div>
-            <p>{note.date}</p>
+            <p>{formatDate(note.created_at)}</p>
          </div>
 
    ));

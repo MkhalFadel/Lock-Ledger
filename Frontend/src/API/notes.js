@@ -1,9 +1,11 @@
-const API_BASE = "https://68befe509c70953d96ee6f2f.mockapi.io/lockLedger";
+const API_BASE = "http://localhost:5000/api/notes";
 
 export async function fetchNotes(userId)
 {
    try{
-      const res = await fetch(`${API_BASE}/notes?userId=${userId}`)
+      const res = await fetch(`${API_BASE}/user/${userId}`, {
+         credentials: 'include'
+      })
       if (res.ok) return await res.json();
    }
    catch(err)
@@ -12,14 +14,15 @@ export async function fetchNotes(userId)
    }
 }
 
-export async function createNote(userId, title, content, date, lastEdit, deletedAt)
+export async function createNote(user_id, title)
 {
    try
    {
-      const res = await fetch(`${API_BASE}/notes`,{
+      const res = await fetch(`${API_BASE}/`,{
       method: "POST",
+      credentials: 'include',
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({userId, title, content, date, lastEdit, deletedAt})
+      body: JSON.stringify({user_id, title})
       }  
       )
    
@@ -34,8 +37,9 @@ export async function createNote(userId, title, content, date, lastEdit, deleted
 export async function updateNote(id, changes)
 {
    try{
-      await fetch(`${API_BASE}/notes/${id}`, {
+      await fetch(`${API_BASE}/${id}`, {
          method: "PUT",
+         credentials: 'include',
          headers: { "Content-Type": "application/json" },
          body: JSON.stringify(changes),
       })
@@ -49,8 +53,9 @@ export async function updateNote(id, changes)
 export async function updateNotesContent(id, contentChanges)
 {
    try{
-      const res = await fetch(`${API_BASE}/notes/${id}`,{
+      const res = await fetch(`${API_BASE}/${id}`,{
       method: "PUT",
+      credentials: 'include',
       headers: { "Content-Type": "application/json" },
          body: JSON.stringify({content: contentChanges})
       })
@@ -67,9 +72,12 @@ export async function deleteAll(notes)
 {
    try{
       await Promise.all(
-      notes.filter(note => note.isDeleted)
+      notes.filter(note => note.is_deleted)
       .map(note => (
-            fetch(`${API_BASE}/notes/${note.id}`, {method: "DELETE"})
+            fetch(`${API_BASE}/${note.id}`, {
+               method: "DELETE",
+               credentials: 'include'
+            })
          ))
       )
       return true;
@@ -83,7 +91,10 @@ export async function deleteAll(notes)
 export async function cleanupNotes(id)
 {
    try{
-      await fetch(`${API_BASE}/notes/${id}`, {method: "DELETE"});
+      await fetch(`${API_BASE}/${id}`, {
+         method: "DELETE",
+         credentials: 'include'
+      });
    }
    catch(err)
    {

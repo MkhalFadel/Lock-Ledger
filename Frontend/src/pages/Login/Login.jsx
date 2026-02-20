@@ -39,15 +39,13 @@ export default function Login({currentUser, setCurrentUser})
    
    async function login()
    {
-      const userInfo = await getUserInfo(email)
+      const userInfo = await getUserInfo(email, password)
 
-      const isMatch = bcrypt.compareSync(password, userInfo[0].hashedPassword)
-
-      if(userInfo && isMatch)
+      if(userInfo)
       {
-         setCurrentUser(userInfo[0])
-         setLocalStorage("currentUser", userInfo[0]);
-         navigate("/Lock-Ledger/Pin"); 
+         setCurrentUser(userInfo.user)
+         setLocalStorage("currentUser", userInfo.user);
+         navigate("/Lock-Ledger/Pin");
       }
       else
          setErrors({login: "Invalid Email or Password"}) 

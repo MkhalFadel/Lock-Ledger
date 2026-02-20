@@ -31,7 +31,7 @@ async function createNote(data) {
          data: {
             user_id: data.user_id,
             title: data.title,
-            content: ""
+            content: "This is a new Note"
          }
       });
       return note;

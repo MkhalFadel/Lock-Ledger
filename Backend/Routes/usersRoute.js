@@ -1,7 +1,7 @@
 const express = require("express");
 const route = express.Router();
 const {findUser, createUser, updateUser, deleteUser, login} = require("../Controllers/usersController");
-const updateFields = require("../utils/utils");
+const {updateUsersFields} = require("../utils/utils");
 
 route.get("/:id", async (req, res) => {
    try {
@@ -16,7 +16,7 @@ route.get("/:id", async (req, res) => {
 route.post("/", async (req, res) => {
    try {
       const data = await createUser(req.body);
-      res.status(201).json({data: data});
+      res.status(201).json(data);
    } catch (error) {
       res.status(500).json({error: error.message});
    }
@@ -26,6 +26,13 @@ route.post("/login", async (req, res) => {
    try {
       const { identifier, password } = req.body; // identifier = email or username
       const data = await login({ identifier, password });
+      console.log(data)
+      res.cookie('authToken', data.token, {
+         httpOnly: true,
+         secure: true,
+         sameSite: 'strict',
+         maxAge: 3600000 
+      })
       res.status(200).json(data);
    } catch (error) {
       res.status(401).json({ error: error.message });
@@ -35,9 +42,9 @@ route.post("/login", async (req, res) => {
 route.put("/:id", async (req, res) => {
    try {
       const {id} = req.params;
-      const fields = updateFields(req.body)
-      const data = await updateUser(parseInt(id), fields);
-      res.status(200).json({data: data});
+      const fields = updateUsersFields(req.body)
+      const data = await updateUser(Number(id), fields);
+      res.status(200).json(data);
    } catch (error) {
       res.status(500).json({error: error.message});
    }

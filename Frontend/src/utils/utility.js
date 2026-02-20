@@ -9,3 +9,13 @@ export function formatTime(time)
 {
    return time >= 10 ? time : `0${time}`;
 }
+
+export function formatDate(dateString) {
+   const date = new Date(dateString);
+
+   return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+   });
+}

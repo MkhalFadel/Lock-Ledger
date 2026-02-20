@@ -4,11 +4,16 @@ const cors = require("cors");
 const users = require("./Routes/usersRoute");
 const notesRoute = require('./Routes/notesRoute');
 const ledgerRoute = require('./Routes/ledgerRoute');
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
-app.use(cors())
+app.use(cors({
+   credentials: true,
+   origin: 'http://localhost:5173'
+}))
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "Frontend")))
 app.use(express.urlencoded({extended: true}));
 

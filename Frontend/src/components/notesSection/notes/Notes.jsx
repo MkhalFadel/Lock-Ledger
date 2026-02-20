@@ -63,10 +63,10 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
 
    async function handleDeleteNote()
    {
-      setNotes(prevNotes => prevNotes.map(n => n.id === note.id ? {...n, isDeleted: true} : n))
+      setNotes(prevNotes => prevNotes.map(n => n.id === note.id ? {...n, is_deleted: true} : n))
       setIsDeleting(false);
       setInNote(false);
-      await updateNote(note.id, {isDeleted: true, deletedAt: Date.now()})
+      await updateNote(note.id, {is_deleted: true})
    }
    
    async function saveChanges()

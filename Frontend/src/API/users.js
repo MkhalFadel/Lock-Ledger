@@ -1,12 +1,14 @@
-import bcrypt from 'bcryptjs'
+const API_BASE = "http://localhost:5000/api/users";
 
-const API_BASE = "https://68befe509c70953d96ee6f2f.mockapi.io/lockLedger";
-fetch(`${API_BASE}/users`).then(r => r.json()).then(console.log)
-
-export async function getUserInfo(email)
+export async function getUserInfo(email, password)
 {
    try{
-      const res = await fetch(`${API_BASE}/users?email=${email}`);
+      const res = await fetch(`${API_BASE}/login/`, {
+         method: "POST",
+         credentials: 'include',
+         headers: {"Content-Type": "application/json"},
+         body: JSON.stringify({identifier: email, password})
+      });
       if (res.ok) return await res.json();
    }
    catch(err)
@@ -19,52 +21,29 @@ export default async function createUser(username, email, password, pin) {
    try {
       username = username.trim();
       email = email.trim();
-
-      // Fetch all users
-      const res = await fetch(`${API_BASE}/users`);
-      if (!res.ok) throw new Error("Failed to fetch users");
-
-      const users = await res.json();
-      const normalizedUsers = Array.isArray(users) ? users.map(u => ({
-         username: u.username?.trim(),
-         email: u.email?.trim(),
-      })) : [];
-
-      // Check duplicates
-      const emailTaken = normalizedUsers.some(u => u.email === email);
-      const usernameTaken = normalizedUsers.some(u => u.username === username);
-
-      if (emailTaken || usernameTaken) {
-         console.log("Duplicate found:", { emailTaken, usernameTaken });
-         return false;
-      }
-
-      // Hash password
-      const salt = bcrypt.genSaltSync(10);
-      const hashedPassword = bcrypt.hashSync(password, salt);
+      pin = Number(pin)
 
       // Create user
-      const createRes = await fetch(`${API_BASE}/users`, {
+      const res = await fetch(`${API_BASE}/`, {
          method: "POST",
+         credentials: 'include',
          headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({ username, email, hashedPassword, pin })
+         body: JSON.stringify({ username, email, password, pin })
       });
 
-      if (!createRes.ok) throw new Error("Failed to create user");
+      if (!res.ok) throw new Error("Failed to create user");
 
-      return await createRes.json();
+      return await res.json();
    } 
    catch (err) {
       console.error("Create User Error:", err);
    }
 }
 
-
-
 export async function updateInfo(id ,info)
 {
    try{
-      const res = await fetch(`${API_BASE}/users/${id}`, {
+      const res = await fetch(`${API_BASE}/${id}`, {
          method: "PUT",
          headers: { "Content-Type": "application/json" },
          body: JSON.stringify(info)

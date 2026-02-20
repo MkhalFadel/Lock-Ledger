@@ -69,7 +69,7 @@ export default function FormBox({page,
          if(Object.keys(validationErrors).length > 0)
             setErrors(validationErrors);
          else
-            addNote(currentUser.id, title, "This is a New Note", today, "", "")
+            addNote(currentUser.id, title)
       }
       else{
          const validationErrors = validateForm({date, title, type, amount});

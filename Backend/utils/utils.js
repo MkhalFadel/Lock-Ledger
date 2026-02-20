@@ -15,8 +15,8 @@ function updateNotesFields(data)
    const fields = {};
    if(data.title) fields.title = data.title;
    if(data.content) fields.content = data.content;
-   if(data.is_favorite) fields.is_favorite = data.is_favorite
-   if(data.is_deleted) fields.is_deleted = data.is_deleted;
+   if(data.is_favorite != undefined) fields.is_favorite = data.is_favorite
+   if(data.is_deleted != undefined) fields.is_deleted = data.is_deleted;
 
    return fields;
 }

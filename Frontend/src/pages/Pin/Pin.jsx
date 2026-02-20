@@ -17,6 +17,7 @@ export default function Pin({currentUser})
       return () => clearTimeout(timer);
    }, [errors])
 
+
    const navigate = useNavigate();
 
    function unlockPin()
@@ -29,7 +30,7 @@ export default function Pin({currentUser})
          return;
       }
 
-      if(pin === currentUser.pin)
+      if(Number(pin) === currentUser.pin)
          navigate("/Lock-Ledger/");
       else 
          setErrors({pin: "Invalid PIN"});
