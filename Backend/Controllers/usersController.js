@@ -1,6 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-const { hashPassword, verifyPassword, generateToken } = require("../utils/auth");
+const { hashPassword, verifyPassword, generateToken, generateRefreshToken } = require("../utils/auth");
 
 async function findUser(id) {
    try {
@@ -34,20 +34,59 @@ async function createUser(data) {
    }
 }
 
-async function login({ identifier, password }) {
+async function loginController(req, res) {
    try {
+      const { identifier, password } = req.body;
+
       const user = await prisma.user.findFirst({
-         where: { OR: [{ email: identifier }, { username: identifier }] }
+         where: {
+            OR: [
+               { email: identifier },
+               { username: identifier }
+            ]
+         }
       });
-      if (!user) throw new Error("Invalid credentials");
+
+      if (!user) {
+         return res.status(401).json({ error: "Invalid credentials" });
+      }
+
       const ok = await verifyPassword(password, user.password);
-      if (!ok) throw new Error("Invalid credentials");
-      const token = generateToken({ id: user.id, username: user.username });
-      const { password: pw, ...rest } = user;
-      return { token, user: rest };
+      if (!ok) {
+         return res.status(401).json({ error: "Invalid credentials" });
+      }
+
+      const payload = { id: user.id, username: user.username };
+
+      const accessToken = generateToken(payload);
+      const refreshToken = generateRefreshToken(payload);
+
+      const cookieOptions = {
+         httpOnly: true,
+         secure: process.env.NODE_ENV === "production",
+         sameSite: "lax",
+      };
+
+      res.cookie("authToken", accessToken, {
+         ...cookieOptions,
+         maxAge: 60 * 60 * 1000
+      });
+
+      res.cookie("refreshToken", refreshToken, {
+         ...cookieOptions,
+         maxAge: 7 * 24 * 60 * 60 * 1000
+      });
+
+      const { password: pw, ...safeUser } = user;
+
+      return res.status(200).json({
+         message: "Login successful",
+         user: safeUser
+      });
+
    } catch (error) {
       console.log("Login error:", error);
-      throw error;
+      return res.status(500).json({ error: "Server error" });
    }
 }
 
@@ -80,4 +119,4 @@ async function deleteUser(id) {
    }
 }
 
-module.exports = { findUser, updateUser, createUser, deleteUser, login };
+module.exports = { findUser, updateUser, createUser, deleteUser, loginController };

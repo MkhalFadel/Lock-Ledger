@@ -1,7 +1,27 @@
 const express = require("express");
 const route = express.Router();
-const {findUser, createUser, updateUser, deleteUser, login} = require("../Controllers/usersController");
+const {findUser, createUser, updateUser, deleteUser, loginController} = require("../Controllers/usersController");
+const { generateToken } = require('../utils/auth');
 const {updateUsersFields} = require("../utils/utils");
+const refreshTokenController = require("../middleware/refreshToken");
+
+const cookieOptions = (() => {
+   if (process.env.NODE_ENV === 'production') {
+      return {
+         httpOnly: true,
+         secure: true,
+         sameSite: 'none',
+         maxAge: 3600000
+      };
+   }
+   // development-friendly options (cookies over http/localhost)
+   return {
+      httpOnly: true,
+      secure: false,
+      sameSite: 'lax',
+      maxAge: 3600000
+   };
+})();
 
 route.get("/:id", async (req, res) => {
    try {
@@ -16,28 +36,19 @@ route.get("/:id", async (req, res) => {
 route.post("/", async (req, res) => {
    try {
       const data = await createUser(req.body);
-      res.status(201).json(data);
+      // Issue auth token immediately after signup
+      const token = generateToken({ id: data.id, username: data.username });
+      console.log('usersRoute: setting authToken cookie on signup', { userId: data.id });
+      res.cookie('authToken', token, cookieOptions);
+      res.status(201).json({ token, user: data });
    } catch (error) {
       res.status(500).json({error: error.message});
    }
 })
 
-route.post("/login", async (req, res) => {
-   try {
-      const { identifier, password } = req.body; // identifier = email or username
-      const data = await login({ identifier, password });
-      console.log(data)
-      res.cookie('authToken', data.token, {
-         httpOnly: true,
-         secure: true,
-         sameSite: 'strict',
-         maxAge: 3600000 
-      })
-      res.status(200).json(data);
-   } catch (error) {
-      res.status(401).json({ error: error.message });
-   }
-})
+route.post("/login", loginController)
+
+route.post('/refresh', refreshTokenController);
 
 route.put("/:id", async (req, res) => {
    try {
