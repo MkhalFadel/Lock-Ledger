@@ -6,6 +6,7 @@ import Trash from '../../assets/icons/Trash.webp'
 import noTransactions from '../../assets/icons/noTransaction.webp'
 import { addTransaction, fetchLedger, editLedger, deleteLedger } from "../../API/ledger"
 import { OrbitProgress } from "react-loading-indicators"
+import { formatDate } from "../../utils/utility"
 
 export default function({transactions, setTransactions, search ,page, isDeleting, setIsDeleting, currentUser, isOpen})
 {
@@ -76,7 +77,7 @@ export default function({transactions, setTransactions, search ,page, isDeleting
 
       if(transactions) return filteredTransactions.map(transaction => (
          <tr key={transaction.id}>
-                  <td>{transaction.date}</td>
+                  <td>{formatDate(transaction.date)}</td>
                   <td>{transaction.title}</td>
                   <td>{transaction.type}</td>
                   <td>${transaction.amount}</td>

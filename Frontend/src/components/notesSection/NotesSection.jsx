@@ -25,15 +25,13 @@ export default function NotesSection({inNote, setInNote, view, search, isOpen, p
    const notesFavoriteExist = notes.every(n => !n.is_favorite) && view === 'favorites' && !loading || (notes.every(n => n.is_deleted && n.is_favorite) && view === 'favorites');
    const notesDeletedExist = notes.every(n => !n.is_deleted) && view === 'trash' && !loading;
 
-   console.log(notes);
 
    useEffect(() => {
       async function loadNotes()
       {
          try
          {
-            const userNotes = await fetchNotes(currentUser.id);
-            console.log('USERNOTES:', userNotes)
+            const userNotes = await fetchNotes();
             const notes = userNotes || [];
             notes && setNotes(notes.sort((a, b) => b.created_at.localeCompare(a.created_at)));
             cleanupTrash(notes);

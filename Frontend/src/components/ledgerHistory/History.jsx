@@ -2,7 +2,7 @@ import styles from './history.module.css'
 import { Chart as ChartJS } from 'chart.js/auto'
 import { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2'
-import { MONTHS } from '../../utils/utility';
+import { formatDate, MONTHS } from '../../utils/utility';
 import { fetchLedger } from '../../API/ledger';
 
 export default function History({isMobile, currentUser, transactions, setTransactions})
@@ -54,8 +54,8 @@ export default function History({isMobile, currentUser, transactions, setTransac
 
    function sortMonthlyTransactions(type)
    {
-      const filtered = transactions.filter(t => t.type === (type === 'income' ? 'Income' : 'Expenses') && (t.date.slice("").split("-")[1] === monthFormated));
-      const transactionsDatesFiltered = filtered.map(t => t.date.slice(8));
+      const filtered = transactions.filter(t => t.type === (type === 'Income' ? 'Income' : 'Expenses') && (formatDate(t.date).slice("").split("-")[1] === monthFormated));
+      const transactionsDatesFiltered = filtered.map(t => formatDate(t.date).slice(8));
       
       const totalArr = [];
 
@@ -77,8 +77,8 @@ export default function History({isMobile, currentUser, transactions, setTransac
 
    function sortYearlyTransactions(type)
    {
-      const filtered = transactions.filter(t => t.type === (type === 'income' ? 'Income' : 'Expenses') && (t.date.split("-")[0] === String(year)));
-      const transactionsDatesFiltered = filtered.map(t => t.date.slice(5, 7));
+      const filtered = transactions.filter(t => t.type === (type === 'Income' ? 'Income' : 'Expenses') && (formatDate(t.date).split("-")[0] === String(year)));
+      const transactionsDatesFiltered = filtered.map(t => formatDate(t.date).slice(5, 7));
       
       const totalArr = [];
 
@@ -106,7 +106,7 @@ export default function History({isMobile, currentUser, transactions, setTransac
       return years;
    }
    
-   const yearsList = getYearsList(2015, 2025)
+   const yearsList = getYearsList(2000, 2030)
 
    function calculateTotals()
    {
@@ -148,7 +148,7 @@ export default function History({isMobile, currentUser, transactions, setTransac
 
       return filteredTransactions.map(transaction => (
                <tr key={transaction.id}>
-                        <td>{transaction.date}</td>
+                        <td>{formatDate(transaction.date)}</td>
                         <td>{transaction.title}</td>
                         <td>{transaction.type}</td>
                         <td>${transaction.amount}</td>
@@ -200,13 +200,13 @@ export default function History({isMobile, currentUser, transactions, setTransac
                datasets: [
                   {
                      label: "Income",
-                     data: mode === 'Monthly' ? sortMonthlyTransactions('income') : sortYearlyTransactions('income'),
+                     data: mode === 'Monthly' ? sortMonthlyTransactions('Income') : sortYearlyTransactions('Income'),
                      backgroundColor: "#038d6a",
                      barThickness: isMobile ? 7 : 25
                   },
                   {
                      label: "Expenses",
-                     data: mode === 'Monthly' ? sortMonthlyTransactions('expenses') : sortYearlyTransactions('expenses'),
+                     data: mode === 'Monthly' ? sortMonthlyTransactions('Expenses') : sortYearlyTransactions('Expenses'),
                      backgroundColor: "#c41818",
                      barThickness: isMobile ? 7 : 25
 

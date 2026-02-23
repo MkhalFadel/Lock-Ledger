@@ -1,26 +1,26 @@
 const express = require("express");
 const route = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
-const { findNote, findNotesByUser, createNote, updateNote, deleteNote } = require("../Controllers/notesController");
+const { findNotesByUser, createNote, updateNote, deleteNote } = require("../Controllers/notesController");
 
 const {updateNotesFields} = require("../utils/utils");
 // protect all notes routes
 route.use(authMiddleware);
 
-route.get("/:id", async (req, res) => {
-   try {
-      const { id } = req.params;
-      const data = await findNote(id);
-      res.status(200).json(data);
-   } catch (error) {
-      res.status(500).json({ error: error.message });
-   }
-});
+//find unique note
+// route.get("/:id", async (req, res) => {
+//    try {
+//       const { id } = req.params;
+//       const data = await findNote(id);
+//       res.status(200).json(data);
+//    } catch (error) {
+//       res.status(500).json({ error: error.message });
+//    }
+// });
 
-route.get("/user/:userId", async (req, res) => {
+route.get("/user/", async (req, res) => {
    try {
-      const { userId } = req.params;
-      const data = await findNotesByUser(userId);
+      const data = await findNotesByUser(req);
       res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error: error.message });
@@ -40,7 +40,7 @@ route.put("/:id", async (req, res) => {
    try {
       const { id } = req.params;
       const fields = updateNotesFields(req.body);
-      const data = await updateNote(id, fields); 
+      const data = await updateNote(id, req, fields); 
       res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error: error.message });
@@ -50,7 +50,7 @@ route.put("/:id", async (req, res) => {
 route.delete("/:id", async (req, res) => {
    try {
       const { id } = req.params;
-      await deleteNote(id);
+      await deleteNote(id, req);
       res.status(200).json({ message: "Note deleted successfully" });
    } catch (error) {
       res.status(500).json({ error: error.message });

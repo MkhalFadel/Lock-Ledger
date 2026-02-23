@@ -6,6 +6,7 @@ import { validateForm, validatePasswordChanges } from "../../utils/validationMes
 import { updateLocalStorage } from "../../utils/localStorage";
 import { updateInfo } from "../../API/users";
 import bcrypt from "bcryptjs";
+import { formatDate } from "../../utils/utility";
 
 export default function FormBox({page, 
                                  setAddingNote, 
@@ -76,7 +77,7 @@ export default function FormBox({page,
          if(Object.keys(validationErrors).length > 0)
             setErrors(validationErrors)
          else
-            isEditing ? editTransaction(date, title, type, amount) : addTransaction(date, title, type, amount)
+            isEditing ? editTransaction(formatDate(date), title, type, amount) : addTransaction(date, title, type, amount)
       }
    }
 
@@ -147,7 +148,7 @@ export default function FormBox({page,
                {/* appears when a new transaction is being added */}
             {page === "ledger" && !isDeleting && (<form onSubmit={e => {e.preventDefault(); handleAdding();}} className={styles.ledgerForm}>
                <h4>Update Ledger</h4>
-               <input onChange={e => setDate(e.target.value)} value={date} type="date" />
+               <input onChange={e => setDate(e.target.value)} value={formatDate(date)} type="date" />
                <input onChange={e => setTitle(e.target.value)} ref={titleRef} placeholder="Add Title" value={title} type="text" className={errors.title && styles.invalid} />
                {errors.title && <p className={styles.errorMsg}>*{errors.title}*</p>}
                <select value={type} onChange={e => setType(e.target.value)} className={`${styles.typeBox} ${errors.type && styles.invalid}`} name="type" id="type" >

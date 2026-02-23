@@ -1,22 +1,22 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-async function findLedger(id) {
-   try {
-      const ledgerEntry = await prisma.ledger.findUnique({
-         where: { id: parseInt(id) }
-      });
-      return ledgerEntry;
-   } catch (error) {
-      console.error("Error finding ledger entry:", error);
-      throw error;
-   }
-}
+// async function findLedger(id) {
+//    try {
+//       const ledgerEntry = await prisma.ledger.findUnique({
+//          where: { id: parseInt(id) }
+//       });
+//       return ledgerEntry;
+//    } catch (error) {
+//       console.error("Error finding ledger entry:", error);
+//       throw error;
+//    }
+// }
 
-async function findLedgerByUser(userId) {
+async function findLedgerByUser(req) {
    try {
       const ledgerEntries = await prisma.ledger.findMany({
-         where: { user_id: parseInt(userId) }
+         where: { user_id: req.user.id }
       });
       return ledgerEntries;
    } catch (error) {
@@ -43,14 +43,14 @@ async function createLedger(data) {
    }
 }
 
-async function updateLedger(id, data) {
+async function updateLedger(id, req, data) {
    try {
       const updatedData = { ...data };
       if (data.date) {
          updatedData.date = new Date(data.date);
       }
       const ledgerEntry = await prisma.ledger.update({
-         where: { id: parseInt(id) },
+         where: { id: parseInt(id), user_id: req.user.id },
          data: updatedData
       });
       return ledgerEntry;
@@ -60,10 +60,10 @@ async function updateLedger(id, data) {
    }
 }
 
-async function deleteLedger(id) {
+async function deleteLedger(id, req) {
    try {
       await prisma.ledger.delete({
-         where: { id: parseInt(id) }
+         where: { id: parseInt(id), user_id: req.user.id }
       });
    } catch (error) {
       console.log("Error deleting ledger entry:", error);
@@ -71,4 +71,4 @@ async function deleteLedger(id) {
    }
 }
 
-module.exports = { findLedger, findLedgerByUser, createLedger, updateLedger, deleteLedger };
+module.exports = { findLedgerByUser, createLedger, updateLedger, deleteLedger };

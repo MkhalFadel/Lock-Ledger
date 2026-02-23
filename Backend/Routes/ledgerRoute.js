@@ -7,21 +7,20 @@ const { findLedger, findLedgerByUser, createLedger, updateLedger, deleteLedger }
 route.use(authMiddleware);
 const {updateLedgerFields} = require("../utils/utils");
 
-route.get("/:id", async (req, res) => {
-   try {
-      const { id } = req.params;
-      const data = await findLedger(id);
-      res.status(200).json({ data: data });
-   } catch (error) {
-      res.status(500).json({ error: error.message });
-   }
-});
+// route.get("/:id", async (req, res) => {
+//    try {
+//       const { id } = req.params;
+//       const data = await findLedger(id);
+//       res.status(200).json(data);
+//    } catch (error) {
+//       res.status(500).json({ error: error.message });
+//    }
+// });
 
-route.get("/user/:userId", async (req, res) => {
+route.get("/user/", async (req, res) => {
    try {
-      const { userId } = req.params;
-      const data = await findLedgerByUser(userId);
-      res.status(200).json({ data: data });
+      const data = await findLedgerByUser(req);
+      res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error: error.message });
    }
@@ -30,7 +29,7 @@ route.get("/user/:userId", async (req, res) => {
 route.post("/", async (req, res) => {
    try {
       const data = await createLedger(req.body);
-      res.status(201).json({ data: data });
+      res.status(201).json(data);
    } catch (error) {
       res.status(500).json({ error: error.message });
    }
@@ -40,8 +39,8 @@ route.put("/:id", async (req, res) => {
    try {
       const { id } = req.params;
       const fields = updateLedgerFields(req.body)
-      const data = await updateLedger(id, fields);
-      res.status(200).json({ data: data });
+      const data = await updateLedger(id, req, fields);
+      res.status(200).json(data);
    } catch (error) {
       res.status(500).json({ error: error.message });
    }

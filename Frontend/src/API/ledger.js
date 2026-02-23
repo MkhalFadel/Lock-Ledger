@@ -1,12 +1,15 @@
-const API_BASE = 'https://68c30a65f9928dbf33f08cf1.mockapi.io/LockLedger';
+import { apiFetch } from "../utils/utility";
 
-export async function addTransaction(userId, date, title, type, amount)
+const API_BASE = 'http://localhost:5000/api/ledger';
+
+export async function addTransaction(user_id, date, title, type, amount)
 {
    try{
-      const res = await fetch(`${API_BASE}/ledger`,{
+      const res = await apiFetch(`${API_BASE}/`,{
          method: "POST",
+         credentials: 'include',
          headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({userId, date, title, type, amount})
+         body: JSON.stringify({user_id, date, title, type, amount})
       })
 
       return await res.json();
@@ -16,11 +19,13 @@ export async function addTransaction(userId, date, title, type, amount)
    }
 }
 
-export async function fetchLedger(userId)
+export async function fetchLedger(user_id)
 {
    try{
-      const res = await fetch(`${API_BASE}/ledger?userId=${userId}`)
-      if (res.ok) return res.json();
+      const res = await apiFetch(`${API_BASE}/user/`, {
+         credentials: 'include'
+      })
+      if (res.ok) return await res.json();
    }
    catch{
       throw new Error("Failed to Fetch Data");
@@ -31,8 +36,9 @@ export async function fetchLedger(userId)
 export async function editLedger(id, date, title, type, amount)
 {
    try{
-      const res = await fetch(`${API_BASE}/ledger/${id}`, {
+      const res = await apiFetch(`${API_BASE}/${id}`, {
          method: "PUT",
+         credentials: 'include',
          headers: { "Content-Type": "application/json" },
          body: JSON.stringify({date: date, title: title, type: type, amount: amount}),
       })
@@ -47,7 +53,10 @@ export async function editLedger(id, date, title, type, amount)
 export async function deleteLedger(id)
 {
    try{
-      await fetch(`${API_BASE}/ledger/${id}`, {method: "DELETE"})
+      await apiFetch(`${API_BASE}/${id}`, {
+         method: "DELETE",
+         credentials: 'include'
+      })
       return true;
    }
    catch{

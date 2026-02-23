@@ -1,39 +1,11 @@
+import { apiFetch } from "../utils/utility";
+
 const API_BASE = "http://localhost:5000/api/notes";
 
-async function apiFetch(url, options = {}) {
-   let response = await fetch(url, {
-      ...options,
-      credentials: "include" // IMPORTANT for cookies
-   });
-
-   if (response.status === 401) {
-      // Try refreshing
-      const refreshResponse = await fetch("http://localhost:5000/api/users/refresh", {
-         method: "POST",
-         credentials: "include"
-      });
-
-      console.log(refreshResponse)
-
-      if (refreshResponse.ok) {
-         // Retry original request
-         response = await fetch(url, {
-            ...options,
-            credentials: "include"
-         });
-      } else {
-         // Refresh failed → redirect to login
-         return;
-      }
-   }
-
-   return response;
-}
-
-export async function fetchNotes(userId)
+export async function fetchNotes()
 {
    try{
-      const res = await apiFetch(`${API_BASE}/user/${userId}`, {
+      const res = await apiFetch(`${API_BASE}/user/`, {
          credentials: 'include'
       })
       if (res.ok) return await res.json();
