@@ -9,7 +9,7 @@ import { getUserInfo } from '../../API/users'
 import { useNavigate } from 'react-router-dom'
 import { setLocalStorage } from '../../utils/localStorage'
 import { validateForm } from '../../utils/validationMessages'
-import bcrypt from 'bcryptjs'
+import GoogleLoginButton from '../../components/googleBtn/GoogleLoginButton'
 
 export default function Login({currentUser, setCurrentUser})
 {
@@ -74,6 +74,7 @@ export default function Login({currentUser, setCurrentUser})
             <div className={styles.container}>
                <img className={styles.logo} src={lockLedgerLogo} alt="LockLedgerLogo" loading='lazy'/>
                <h1>Welcome to LockLedger</h1>
+               <GoogleLoginButton currentUser={currentUser} setCurrentUser={setCurrentUser} />
                <div className={styles.emailContainer}>
                   <label htmlFor="Email">Email</label>
                   <input onChange={e => setEmail(e.target.value)} placeholder='example@gmail.com' id="Email" type="email" className={`${styles.email} ${(errors.email || errors.login) ? styles.invalid : ""}`} />

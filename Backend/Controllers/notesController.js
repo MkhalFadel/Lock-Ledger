@@ -18,6 +18,7 @@ async function findNotesByUser(req) {
       const notes = await prisma.notes.findMany({
          where: { user_id: req.user.id }
       });
+      console.log('REQ:', req.user)
       return notes;
    } catch (error) {
       console.error("Error finding notes by user:", error);

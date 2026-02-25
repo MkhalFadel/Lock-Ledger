@@ -100,7 +100,7 @@ export default function ProfileInfo({isOpen, currentUser, setCurrentUser, page})
          <div className={styles.profile}>
             <div className={styles.accountInfo}>
                <div className={styles.profilePicContainer}>
-                  <img src={profileIcon} alt="ProfilePicture" className={styles.profilePic} loading='lazy' />
+                  <img src={currentUser.image_url || profileIcon} alt="ProfilePicture" className={styles.profilePic} loading='lazy' />
                   { /* <button className={`${styles.editPicBtn} ${!isOpen ? styles.sideBarClose : ""}`}>
                      <img src={EditIcon} alt="editBtn" loading='lazy' />
                   </button> */}

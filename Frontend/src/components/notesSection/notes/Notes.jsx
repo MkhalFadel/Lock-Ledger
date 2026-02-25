@@ -1,7 +1,7 @@
 import styles from "./notes.module.css"
 import FormBox from "../../formBox/FormBox";
 import { useState, useEffect, useRef } from "react"
-import { DAYS, MONTHS, formatTime } from "../../../utils/utility";
+import { DAYS, MONTHS, formatDate, formatTime } from "../../../utils/utility";
 import EditIcon from '../../../assets/icons/EditIcon.webp'
 import saveIcon from '../../../assets/icons/saveIcon.webp'
 import Trash from '../../../assets/icons/Trash.webp'
@@ -18,7 +18,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
    const [isEditing, setIsEditing] = useState(false)  ;
    const [text, setText] = useState("");
    const [editedText,setEditedText] = useState("");
-   const [lastEdit, setLastEdit] = useState(note.lastEdit);
+   const [lastEdit, setLastEdit] = useState(formatDate(note.last_edit));
 
    // setting the text variable to the notes content if found
    useEffect(() => {
@@ -46,17 +46,14 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
          if(text !== editedText)
          {
             const date = new Date();
-            const month = MONTHS[date.getMonth()];
+            let month = date.getMonth();
+            month = month < 9 ? "0" + (month + 1) : month + 1;
             const day = date.getDate();
-            let hour = date.getHours();
-            hour = hour % 12 || 12; 
-            const minutes = date.getMinutes();
-            const amOrPm = hour > 12 ? "AM" : "PM";
-            const lastSavedEdit = `${month} ${day} ${formatTime(hour)}:${formatTime(minutes)} ${amOrPm}`
+            const year = date.getFullYear();
+            const lastSavedEdit = `${year}-${month}-${day}`
             setLastEdit(lastSavedEdit);
-            note.lastEdit = lastSavedEdit;
-            console.log(lastSavedEdit);
-            await updateNote(note.id, {lastEdit: lastSavedEdit})
+            note.last_edit = lastSavedEdit;
+            await updateNote(note.id, {last_edit: lastSavedEdit})
          }
    }
    
@@ -94,7 +91,7 @@ export default function Notes({isOpen, setInNote, page, noteId, notes, setNotes,
          <div className={styles.toolbar}>
             <div className={styles.leftSide}>
                <h3>{note.title}</h3>
-               <p>{lastEdit}</p>
+               <p>{lastEdit || formatDate(note.last_edit)}</p>
             </div>
 
             <div className={styles.rightSide}>

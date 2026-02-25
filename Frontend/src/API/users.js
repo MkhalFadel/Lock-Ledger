@@ -42,6 +42,7 @@ export default async function createUser(username, email, password, pin) {
 
 export async function updateInfo(id ,info)
 {
+   console.log('UPDATEINFO:', id, info)
    try{
       const res = await fetch(`${API_BASE}/${id}`, {
          method: "PUT",
@@ -53,6 +54,6 @@ export async function updateInfo(id ,info)
    }
    catch(err)
    {
-      console.log(err);
+      console.log('Update User Error: ', err);
    }
 }

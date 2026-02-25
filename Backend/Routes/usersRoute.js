@@ -4,6 +4,7 @@ const {findUser, createUser, updateUser, deleteUser, loginController} = require(
 const { generateToken } = require('../utils/auth');
 const {updateUsersFields} = require("../utils/utils");
 const refreshTokenController = require("../middleware/refreshToken");
+const googleLoginController = require("../Controllers/googleLoginControllerl")
 
 const cookieOptions = (() => {
    if (process.env.NODE_ENV === 'production') {
@@ -38,13 +39,14 @@ route.post("/", async (req, res) => {
       const data = await createUser(req.body);
       // Issue auth token immediately after signup
       const token = generateToken({ id: data.id, username: data.username });
-      console.log('usersRoute: setting authToken cookie on signup', { userId: data.id });
       res.cookie('authToken', token, cookieOptions);
       res.status(201).json({ token, user: data });
    } catch (error) {
       res.status(500).json({error: error.message});
    }
 })
+
+route.post("/auth/google", googleLoginController);
 
 route.post("/login", loginController)
 

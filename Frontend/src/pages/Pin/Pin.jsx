@@ -3,11 +3,13 @@ import lockLedgerLogo from "../../assets/lockLedgerLogo.webp"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { validateForm } from "../../utils/validationMessages";
+import CreatePin from "./createPin/CreatePin";
 
-export default function Pin({currentUser})
+export default function Pin({currentUser, setCurrentUser})
 {
    const [errors, setErrors] = useState({});
    const [pin, setPin] = useState("");
+   const [pinState, setPinState] = useState(currentUser.pin ? 'unlock' : 'create')
 
    useEffect(() => {
       const timer = setTimeout(() => {
@@ -30,7 +32,7 @@ export default function Pin({currentUser})
          return;
       }
 
-      if(Number(pin) === currentUser.pin)
+      if(Number(pin) === Number(currentUser.pin))
          navigate("/Lock-Ledger/");
       else 
          setErrors({pin: "Invalid PIN"});
@@ -38,7 +40,7 @@ export default function Pin({currentUser})
 
    return (
       <div className={styles.bodyContainer}>
-         <form onSubmit={e => {e.preventDefault(); unlockPin();}}>
+         {pinState === 'unlock' && <form onSubmit={e => {e.preventDefault(); unlockPin();}}>
             <div className={styles.container}>
                <img className={styles.logo} src={lockLedgerLogo} alt="LockLedgerLogo" loading='lazy'/>
                <h1>Enter your PIN to Conitnue</h1>
@@ -50,7 +52,8 @@ export default function Pin({currentUser})
 
                <button type='submit' className={styles.unlockBtn}>Unlock</button>
             </div>
-         </form>
+         </form>}
+         {pinState === 'create' && <CreatePin setCurrentUser={setCurrentUser} currentUser={currentUser} setPinState={setPinState} />}
       </div>
    )
 }

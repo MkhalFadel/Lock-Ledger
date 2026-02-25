@@ -24,7 +24,7 @@ export default function App()
   return (
     <Routes>
       <Route element={<ProtectedRoutes currentUser={currentUser} />}>
-        <Route exact path="/Lock-ledger/Pin" element={<Pin currentUser={currentUser} />} />
+        <Route exact path="/Lock-Ledger/Pin" element={<Pin currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
         <Route path="/Lock-Ledger/" element={<MainSection currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
       </Route>
       <Route path="/Lock-Ledger/login" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
